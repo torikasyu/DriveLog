@@ -7,14 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F525F64C1CCFADBA00B4B9B9 /* Util.swift */; };
+		F5344E461CCE5B0900D642B6 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5344E451CCE5B0900D642B6 /* Social.framework */; };
+		F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59902031CD4372D00D968B0 /* ConfigViewController.swift */; };
 		F5BD3E961CCCFED800B446CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD3E951CCCFED800B446CE /* AppDelegate.swift */; };
 		F5BD3E981CCCFED800B446CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD3E971CCCFED800B446CE /* ViewController.swift */; };
 		F5BD3E9B1CCCFED800B446CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5BD3E991CCCFED800B446CE /* Main.storyboard */; };
 		F5BD3E9D1CCCFED800B446CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */; };
 		F5BD3EA01CCCFED800B446CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */; };
+		F5BD3EA81CCD05A800B446CE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F525F64C1CCFADBA00B4B9B9 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		F5344E451CCE5B0900D642B6 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		F59902031CD4372D00D968B0 /* ConfigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
 		F5BD3E921CCCFED700B446CE /* DriveLog_swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveLog_swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BD3E951CCCFED800B446CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5BD3E971CCCFED800B446CE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +29,7 @@
 		F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F5BD3E9F1CCCFED800B446CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F5BD3EA11CCCFED800B446CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +37,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5344E461CCE5B0900D642B6 /* Social.framework in Frameworks */,
+				F5BD3EA81CCD05A800B446CE /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +48,8 @@
 		F5BD3E891CCCFED700B446CE = {
 			isa = PBXGroup;
 			children = (
+				F5344E451CCE5B0900D642B6 /* Social.framework */,
+				F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */,
 				F5BD3E941CCCFED800B446CE /* DriveLog_swift */,
 				F5BD3E931CCCFED700B446CE /* Products */,
 			);
@@ -60,6 +72,8 @@
 				F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */,
 				F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */,
 				F5BD3EA11CCCFED800B446CE /* Info.plist */,
+				F525F64C1CCFADBA00B4B9B9 /* Util.swift */,
+				F59902031CD4372D00D968B0 /* ConfigViewController.swift */,
 			);
 			path = DriveLog_swift;
 			sourceTree = "<group>";
@@ -136,6 +150,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5BD3E981CCCFED800B446CE /* ViewController.swift in Sources */,
+				F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */,
+				F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */,
 				F5BD3E961CCCFED800B446CE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +302,7 @@
 				F5BD3EA61CCCFED800B446CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
