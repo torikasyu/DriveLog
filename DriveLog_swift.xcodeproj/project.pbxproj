@@ -9,7 +9,13 @@
 /* Begin PBXBuildFile section */
 		F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F525F64C1CCFADBA00B4B9B9 /* Util.swift */; };
 		F5344E461CCE5B0900D642B6 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5344E451CCE5B0900D642B6 /* Social.framework */; };
+		F55153BB1D578B8E00C1C49C /* neko.png in Resources */ = {isa = PBXBuildFile; fileRef = F55153BA1D578B8E00C1C49C /* neko.png */; };
+		F586FFDD1CDB31E50049FA89 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */; };
+		F586FFDE1CDB31E50049FA89 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F586FFDC1CDB31E50049FA89 /* Photo.swift */; };
+		F5909C131CDEE98B00468690 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */; };
+		F598C8331CDA3AAB00F6C7FE /* MyAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */; };
 		F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59902031CD4372D00D968B0 /* ConfigViewController.swift */; };
+		F59902341CD5ED8200D968B0 /* Photo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F59902321CD5ED8200D968B0 /* Photo.xcdatamodeld */; };
 		F5BD3E961CCCFED800B446CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD3E951CCCFED800B446CE /* AppDelegate.swift */; };
 		F5BD3E981CCCFED800B446CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD3E971CCCFED800B446CE /* ViewController.swift */; };
 		F5BD3E9B1CCCFED800B446CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5BD3E991CCCFED800B446CE /* Main.storyboard */; };
@@ -21,7 +27,13 @@
 /* Begin PBXFileReference section */
 		F525F64C1CCFADBA00B4B9B9 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		F5344E451CCE5B0900D642B6 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		F55153BA1D578B8E00C1C49C /* neko.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = neko.png; sourceTree = "<group>"; };
+		F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F586FFDC1CDB31E50049FA89 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
+		F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		F59902031CD4372D00D968B0 /* ConfigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
+		F59902331CD5ED8200D968B0 /* Photo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Photo.xcdatamodel; sourceTree = "<group>"; };
 		F5BD3E921CCCFED700B446CE /* DriveLog_swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveLog_swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5BD3E951CCCFED800B446CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5BD3E971CCCFED800B446CE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +60,8 @@
 		F5BD3E891CCCFED700B446CE = {
 			isa = PBXGroup;
 			children = (
+				F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */,
+				F586FFDC1CDB31E50049FA89 /* Photo.swift */,
 				F5344E451CCE5B0900D642B6 /* Social.framework */,
 				F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */,
 				F5BD3E941CCCFED800B446CE /* DriveLog_swift */,
@@ -66,14 +80,18 @@
 		F5BD3E941CCCFED800B446CE /* DriveLog_swift */ = {
 			isa = PBXGroup;
 			children = (
+				F55153BA1D578B8E00C1C49C /* neko.png */,
 				F5BD3E951CCCFED800B446CE /* AppDelegate.swift */,
+				F59902321CD5ED8200D968B0 /* Photo.xcdatamodeld */,
 				F5BD3E971CCCFED800B446CE /* ViewController.swift */,
+				F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */,
 				F5BD3E991CCCFED800B446CE /* Main.storyboard */,
 				F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */,
 				F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */,
 				F5BD3EA11CCCFED800B446CE /* Info.plist */,
 				F525F64C1CCFADBA00B4B9B9 /* Util.swift */,
 				F59902031CD4372D00D968B0 /* ConfigViewController.swift */,
+				F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */,
 			);
 			path = DriveLog_swift;
 			sourceTree = "<group>";
@@ -105,11 +123,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = TANAKAHiroki;
 				TargetAttributes = {
 					F5BD3E911CCCFED700B446CE = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = KP88P7787K;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -136,6 +156,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F55153BB1D578B8E00C1C49C /* neko.png in Resources */,
 				F5BD3EA01CCCFED800B446CE /* LaunchScreen.storyboard in Resources */,
 				F5BD3E9D1CCCFED800B446CE /* Assets.xcassets in Resources */,
 				F5BD3E9B1CCCFED800B446CE /* Main.storyboard in Resources */,
@@ -149,10 +170,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F586FFDE1CDB31E50049FA89 /* Photo.swift in Sources */,
+				F586FFDD1CDB31E50049FA89 /* Photo+CoreDataProperties.swift in Sources */,
 				F5BD3E981CCCFED800B446CE /* ViewController.swift in Sources */,
 				F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */,
 				F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */,
+				F59902341CD5ED8200D968B0 /* Photo.xcdatamodeld in Sources */,
+				F598C8331CDA3AAB00F6C7FE /* MyAnnotation.swift in Sources */,
 				F5BD3E961CCCFED800B446CE /* AppDelegate.swift in Sources */,
+				F5909C131CDEE98B00468690 /* PhotoDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,8 +218,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -237,8 +265,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -257,6 +287,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -265,10 +296,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KP88P7787K;
 				INFOPLIST_FILE = DriveLog_swift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.torikasyu.DriveLog-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -276,10 +309,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KP88P7787K;
 				INFOPLIST_FILE = DriveLog_swift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.torikasyu.DriveLog-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -305,6 +340,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F59902321CD5ED8200D968B0 /* Photo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F59902331CD5ED8200D968B0 /* Photo.xcdatamodel */,
+			);
+			currentVersion = F59902331CD5ED8200D968B0 /* Photo.xcdatamodel */;
+			path = Photo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F5BD3E8A1CCCFED700B446CE /* Project object */;
 }
