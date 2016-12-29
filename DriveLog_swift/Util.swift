@@ -41,7 +41,7 @@ class Util
     }
  */
     
-    static func DistRangeIdxToMeter(idx:Int) -> Int!
+    static func DistRangeIdxToMeter(_ idx:Int) -> Int!
     {
         switch idx {
         case 0:
@@ -60,20 +60,20 @@ class Util
     }
     
     //static func doTweet(status:String,imageData:NSData?,twAccount:ACAccount,location:CLLocationCoordinate2D?)
-    static func doTweet(status:String,imageData:NSData?,location:CLLocationCoordinate2D?)
+    static func doTweet(_ status:String,imageData:Data?,location:CLLocationCoordinate2D?)
     {
         // アカウントを取得する
-        let defaults = NSUserDefaults()
+        let defaults = UserDefaults()
         var twAccount:ACAccount?;
 
         let acs = ACAccountStore()
-        if let t = defaults.stringForKey("TwitterAcId")
+        if let t = defaults.string(forKey: "TwitterAcId")
         {
-            twAccount = acs.accountWithIdentifier(t)
+            twAccount = acs.account(withIdentifier: t)
         }
         
         // 投稿パラメータ設定
-        let URL = NSURL(string: "https://api.twitter.com/1.1/statuses/update_with_media.json")
+        let URL = Foundation.URL(string: "https://api.twitter.com/1.1/statuses/update_with_media.json")
         var params:Dictionary = ["status" : status]
         
         if let t = location {
@@ -84,20 +84,20 @@ class Util
         // リクエストを生成
         let request = SLRequest(forServiceType: SLServiceTypeTwitter,
                                 requestMethod: .POST,
-                                URL: URL,
-                                parameters: params as [NSObject : AnyObject])
+                                url: URL,
+                                parameters: params as [AnyHashable: Any])
         
         // 取得したアカウントをセット
         if let t = twAccount
         {
-            request.account = t
+            request?.account = t
 
             if let t = imageData {
-                request.addMultipartData(t, withName:"media[]", type: "image/jpeg", filename: "image.jpg")
+                request?.addMultipartData(t, withName:"media[]", type: "image/jpeg", filename: "image.jpg")
             }
             
             // APIコールを実行
-            request.performRequestWithHandler { (responseData, urlResponse, error) -> Void in
+            request?.perform { (responseData, urlResponse, error) -> Void in
                 
                 if error != nil {
                     print("error is \(error)")
@@ -105,7 +105,7 @@ class Util
                 else {
                     // 結果の表示
                     do {
-                        let result = try NSJSONSerialization.JSONObjectWithData(responseData, options: .MutableContainers) as! NSDictionary
+                        let result = try JSONSerialization.jsonObject(with: responseData!, options: .mutableContainers) as! NSDictionary
                         print("result is \(result)")
                         print(params)
                         
