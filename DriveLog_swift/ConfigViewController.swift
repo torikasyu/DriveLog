@@ -22,27 +22,27 @@ class ConfigViewController: UIViewController {
     @IBOutlet weak var labelTwitterID: UILabel!
     @IBOutlet weak var labelAccountID: UILabel!
     
-    @IBAction func btnDistRangeSegCon(sender: UISegmentedControl) {
+    @IBAction func btnDistRangeSegCon(_ sender: UISegmentedControl) {
 
-        let ud = NSUserDefaults()
-        ud.setInteger(sender.selectedSegmentIndex, forKey: "TweetRange")
+        let ud = UserDefaults()
+        ud.set(sender.selectedSegmentIndex, forKey: "TweetRange")
     }
 
-    @IBAction func switchRelationTwitterChange(sender: UISwitch) {
-        let ud = NSUserDefaults()
-        ud.setBool(sender.on, forKey: "RelationTwitter")
+    @IBAction func switchRelationTwitterChange(_ sender: UISwitch) {
+        let ud = UserDefaults()
+        ud.set(sender.isOn, forKey: "RelationTwitter")
         
-        if(sender.on)
+        if(sender.isOn)
         {
             self.configureTwitter()
         }
     }
     
-    @IBAction func btnTwitterDisconnect(sender: AnyObject) {
+    @IBAction func btnTwitterDisconnect(_ sender: AnyObject) {
         
-        let ud = NSUserDefaults()
-        ud.setObject(nil, forKey: "TwitterAcName")
-        ud.setObject(nil, forKey: "TwitterAcId")
+        let ud = UserDefaults()
+        ud.set(nil, forKey: "TwitterAcName")
+        ud.set(nil, forKey: "TwitterAcId")
         
         self.labelTwitterID.text = "連動なし"
         self.labelAccountID.text = "";
@@ -52,17 +52,17 @@ class ConfigViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let ud = NSUserDefaults()
+        let ud = UserDefaults()
         
-        if let t:Int = ud.integerForKey("TweetRange")
+        if let t:Int = ud.integer(forKey: "TweetRange") as Int?
         {
             distRangeSegCon.selectedSegmentIndex = t
         }
-        if let t:Bool = ud.boolForKey("RelationTwitter")
+        if let t:Bool = ud.bool(forKey: "RelationTwitter") as Bool?
         {
-            switchRelationTwitter.on = t
+            switchRelationTwitter.isOn = t
         }
-        if let t:String = ud.stringForKey("TwitterAcName")
+        if let t:String = ud.string(forKey: "TwitterAcName")
         {
             labelTwitterID.text = t
         }
@@ -71,7 +71,7 @@ class ConfigViewController: UIViewController {
             labelTwitterID.text = "連動なし"
         }
         
-        if let t:String = ud.stringForKey("TwitterAcId")
+        if let t:String = ud.string(forKey: "TwitterAcId")
         {
             labelAccountID.text = t
         }
@@ -89,11 +89,12 @@ class ConfigViewController: UIViewController {
         var isError = false
         var errMsg = ""
         
-        if(SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter))
+        if(SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter))
         {
-            let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+            let accountType = accountStore.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter)
             
-            accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (granted:Bool, error:NSError?) -> Void in
+            //accountStore.requestAccessToAccounts(with: accountType, options: nil) { (granted:Bool, error:NSError?) -> Void in
+            accountStore.requestAccessToAccounts(with: accountType, options: nil) { (success:Bool, error:Error?) -> Void in
                 if error != nil {
                     // エラー処理
                     print("error! \(error)")
@@ -101,7 +102,7 @@ class ConfigViewController: UIViewController {
                     isError = true
                     errMsg = "本体の「設定」でTwitterアカウントを設定してください"
                 }
-                else if !granted {
+                else if !success {
                     print("error! Twitterアカウントの利用が許可されていません")
                     //return
                     isError = true
@@ -110,7 +111,7 @@ class ConfigViewController: UIViewController {
                 else
                 {
                     // 設定されているTwitterアカウントを取得
-                    let accounts = self.accountStore.accountsWithAccountType(accountType) as! [ACAccount]
+                    let accounts = self.accountStore.accounts(with: accountType) as! [ACAccount]
                     
                     if accounts.count == 0 {
                         print("error! 設定画面からアカウントを設定してください")
@@ -134,12 +135,12 @@ class ConfigViewController: UIViewController {
                     }
                     else
                     {
-                        let ud = NSUserDefaults()
-                        ud.setObject(accounts[0].username, forKey: "TwitterAcName")
-                        ud.setObject(accounts[0].identifier, forKey: "TwitterAcId")
+                        let ud = UserDefaults()
+                        ud.set(accounts[0].username, forKey: "TwitterAcName")
+                        ud.set(accounts[0].identifier, forKey: "TwitterAcId")
                         
                         self.labelTwitterID.text = accounts[0].username
-                        self.labelAccountID.text = accounts[0].identifier
+                        self.labelAccountID.text = accounts[0].identifier as String?
                     }
                     
                 }
@@ -153,43 +154,43 @@ class ConfigViewController: UIViewController {
         
         if(isError)
         {
-            let alert = UIAlertController(title:"Twitter",message: errMsg,preferredStyle:UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert,animated:true,completion:nil)
+            let alert = UIAlertController(title:"Twitter",message: errMsg,preferredStyle:UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert,animated:true,completion:nil)
             
             isError = false
         }
     }
     
     // MARK: Twitterアカウントが複数設定されている時に選択させる
-    private func showAccountSelectSheet(accounts: [ACAccount]) {
+    fileprivate func showAccountSelectSheet(_ accounts: [ACAccount]) {
         
         let alert = UIAlertController(title: "Twitter",
                                       message: "アカウントを選択してください",
-                                      preferredStyle: .ActionSheet)
+                                      preferredStyle: .actionSheet)
         
         // アカウント選択のActionSheetを表示するボタン
         for account in accounts {
             alert.addAction(UIAlertAction(title: account.username,
-                style: .Default,
+                style: .default,
                 handler: { (action) -> Void in
                     //
                     print("your select account is \(account)")
                     //self.twAccount = account
                     
-                    let ud = NSUserDefaults()
-                    ud.setObject(account.username, forKey:"TwitterAcName")
-                    ud.setObject(account.identifier, forKey:"TwitterAcId")
+                    let ud = UserDefaults()
+                    ud.set(account.username, forKey:"TwitterAcName")
+                    ud.set(account.identifier, forKey:"TwitterAcId")
                     
                     self.labelTwitterID.text = account.username
-                    self.labelAccountID.text = account.identifier
+                    self.labelAccountID.text = account.identifier as String?
             }))
         }
         
         // キャンセルボタン
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         // 表示する
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 }

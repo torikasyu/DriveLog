@@ -19,13 +19,13 @@ class PhotoDetailViewController : UIViewController {
     @IBOutlet weak var labelPhotoid: UILabel!
     @IBOutlet weak var labelAddress: UILabel!
     
-    @IBAction func btnDelete(sender: UIButton) {
+    @IBAction func btnDelete(_ sender: UIButton) {
         
     }
-    @IBAction func btnTweet(sender: AnyObject) {        
+    @IBAction func btnTweet(_ sender: AnyObject) {        
         Util.doTweet(address!, imageData: UIImageJPEGRepresentation(photoImage!,100.0), location: nil)
     }
-    @IBAction func btnSaveCameraRoll(sender: UIButton) {
+    @IBAction func btnSaveCameraRoll(_ sender: UIButton) {
         UIImageWriteToSavedPhotosAlbum(self.imageView.image!, self, nil, nil)
     }
     

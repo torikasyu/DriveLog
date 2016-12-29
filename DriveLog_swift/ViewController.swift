@@ -31,7 +31,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     var preView:UIView!
     var camera:AVCaptureDevice!
     
-    var captureImageData:NSData?
+    var captureImageData:Data?
     
     // Videoが使用可能かどうか
     var isAvailableVideo = true
@@ -53,29 +53,29 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     @IBOutlet weak var btnAutoCapture: UIButton!
     
     // MARK: - Actions
-    @IBAction func btnConfig(sender: AnyObject) {
-        performSegueWithIdentifier("configSegue", sender: sender)
+    @IBAction func btnConfig(_ sender: AnyObject) {
+        performSegue(withIdentifier: "configSegue", sender: sender)
     }
     
-    @IBAction func btnCapture(sender: AnyObject) {
+    @IBAction func btnCapture(_ sender: AnyObject) {
         self.doCapture()
     }
     
-    @IBAction func btnAutoCapture(sender: AnyObject) {
+    @IBAction func btnAutoCapture(_ sender: AnyObject) {
         
         if(self.isAutoCaptureMode == false)
         {
             self.isAutoCaptureMode = true
             
             let button = sender as! UIButton
-            button.setTitle("Stop Capture", forState: UIControlState.Normal)
+            button.setTitle("Stop Capture", for: UIControlState())
         }
         else
         {
             self.isAutoCaptureMode = false
             
             let button = sender as! UIButton
-            button.setTitle("Start Capture", forState: UIControlState.Normal)
+            button.setTitle("Start Capture", for: UIControlState())
         }
     }
     
@@ -86,7 +86,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         print("doCapture")
         
         //画像添付
-        var imageData:NSData!
+        var imageData:Data!
         if isAvailableVideo {
             //self.captureSession.stopRunning()
             //imageData = UIImageJPEGRepresentation(self.imageViewVideo.image!,1)!
@@ -109,14 +109,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         }
 
         // Save Data to CoreData
-        let photo = Photo(entity: entryDescription, insertIntoManagedObjectContext: managedContext)
+        let photo = Photo(entity: entryDescription, insertInto: managedContext)
         
         if let t = self.address { photo.address = t}
-        photo.latitude = lastLocation!.latitude
-        photo.longiture = lastLocation!.longitude
+        photo.latitude = lastLocation!.latitude as NSNumber?
+        photo.longiture = lastLocation!.longitude as NSNumber?
         photo.image = imageData
-        photo.photoid = NSUUID().UUIDString
-        photo.date = NSDate()
+        photo.photoid = UUID().uuidString
+        photo.date = Date()
         
         do {
             try managedContext.save()
@@ -131,12 +131,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         if let t:CLLocationCoordinate2D = lastLocation
         {
-            let format = NSDateFormatter()
+            let format = DateFormatter()
             format.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
             let pin = MyAnnotation(location: t)
             pin.identity = photo.photoid
-            pin.title = format.stringFromDate(photo.date!)
+            pin.title = format.string(from: photo.date! as Date)
             pin.subtitle = photo.address!
             
             // 地図にピンを立てる
@@ -153,14 +153,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         super.viewDidLoad()
         
         // CoreData
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedContext = appDelegate.managedObjectContext
-        entryDescription =  NSEntityDescription.entityForName("Photo",inManagedObjectContext:managedContext)
+        entryDescription =  NSEntityDescription.entity(forEntityName: "Photo",in:managedContext)
         
-        let defaults = NSUserDefaults()
+        let defaults = UserDefaults()
         
         //Tweet間隔読み込み
-        if let t:Int = defaults.integerForKey("TweetRange")
+        if let t:Int = defaults.integer(forKey: "TweetRange") as Int?
         {
             range = Util.DistRangeIdxToMeter(t)
         }
@@ -178,11 +178,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         locationManager.distanceFilter = 50.0
         
         // 用途の指定
-        locationManager.activityType = CLActivityType.AutomotiveNavigation
+        locationManager.activityType = CLActivityType.automotiveNavigation
         
         // 位置情報サービスへの認証状態を取得する
         let status = CLLocationManager.authorizationStatus()
-        if status == CLAuthorizationStatus.NotDetermined {
+        if status == CLAuthorizationStatus.notDetermined {
             // 未認証ならリクエストダイアログ出す
             locationManager.requestWhenInUseAuthorization();
         }
@@ -190,7 +190,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         // MapView設定
         mapView.delegate = self
-        mapView.setUserTrackingMode(MKUserTrackingMode.Follow, animated: true)
+        mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         
         // ビデオ画像ストリーミング開始
         //self.configureCamera()
@@ -200,7 +200,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // メモリ管理のため
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         // スクリーン設定
         setupDisplay()
         // カメラの設定
@@ -208,7 +208,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // メモリ管理のため
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         // camera stop メモリ解放
         session.stopRunning()
         
@@ -225,12 +225,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     func setupDisplay(){
         //スクリーンの幅
-        let screenWidth = UIScreen.mainScreen().bounds.size.width;
+        let screenWidth = UIScreen.main.bounds.size.width;
         //スクリーンの高さ
-        let screenHeight = UIScreen.mainScreen().bounds.size.width*3/4;
+        let screenHeight = UIScreen.main.bounds.size.width*3/4;
         
         // プレビュー用のビューを生成
-        preView = UIView(frame: CGRectMake(0.0, 0.0, screenWidth, screenHeight))
+        preView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight))
         
     }
     
@@ -240,7 +240,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
         
     // MARK: 画像をキャプチャーしてTwitterに投稿し、Pinを立てる
-    private func postTweet(imageData:NSData) {
+    fileprivate func postTweet(_ imageData:Data) {
         // ツイートしたい文章をセット
         var status = "\(range)m間隔でTweet中 "
         if(address == nil)
@@ -261,9 +261,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         self.fetchCoreData(nil)
     }
     
-    func fetchCoreData(predicate:NSPredicate?)
+    func fetchCoreData(_ predicate:NSPredicate?)
     {
-        let fetchRequest = NSFetchRequest(entityName: "Photo")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
 
         if let t = predicate {
             fetchRequest.predicate = t
@@ -272,7 +272,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         var photos = [Photo]()
         do {
             let results =
-                try managedContext.executeFetchRequest(fetchRequest)
+                try managedContext.fetch(fetchRequest)
             photos = results as! [Photo]
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
@@ -283,15 +283,15 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             // imageはメモリを食うので、Pinを表示するタイミングで別途取得する
             let lat:Double = Double(photo.latitude!)
             let lon:Double = Double(photo.longiture!)
-            let date:NSDate = photo.date!
+            let date:Date = photo.date! as Date
             
-            let format = NSDateFormatter()
+            let format = DateFormatter()
             format.dateFormat = "yyyy-MM-dd HH:mm:ss"
             
             // ピンを作成する（identityを追加したカスタムクラスを使用する）
             let pin:MyAnnotation = MyAnnotation(location: CLLocationCoordinate2D(latitude: lat, longitude: lon))
             
-            pin.title = format.stringFromDate(date)
+            pin.title = format.string(from: date)
             pin.subtitle = photo.address!
             pin.identity = photo.photoid
             
@@ -301,9 +301,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // MARK: photoidから画像を取得する
-    func fetchImage(photoid:String) -> UIImage
+    func fetchImage(_ photoid:String) -> UIImage
     {
-        let fetchRequest = NSFetchRequest(entityName: "Photo")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         
         let predicate = NSPredicate(format: "photoid = %@",photoid)
         fetchRequest.predicate = predicate
@@ -312,7 +312,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         do {
             let results =
-                try managedContext.executeFetchRequest(fetchRequest)
+                try managedContext.fetch(fetchRequest)
             photos = results as! [Photo]
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
@@ -320,7 +320,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         if let t = photos[0].image
         {
-            return UIImage(data:t)!
+            return UIImage(data:t as Data)!
         }
         return UIImage(named: "neko.png")!
         
@@ -328,18 +328,18 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     //MARK: photoidをキーにして削除を行う
-    func deleteCoreData(photoid:String)
+    func deleteCoreData(_ photoid:String)
     {
-        let fetchRequest = NSFetchRequest(entityName: "Photo")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
 
         let predicate = NSPredicate(format: "photoid = %@",photoid)
         fetchRequest.predicate = predicate
         
         do {
-            let results = try managedContext.executeFetchRequest(fetchRequest)
+            let results = try managedContext.fetch(fetchRequest)
             
             for result in results {
-                managedContext.deleteObject(result as! NSManagedObject)
+                managedContext.delete(result as! NSManagedObject)
             }
             // 保存を忘れず
             try managedContext.save()
@@ -350,14 +350,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // MARK: - 遷移先の PhotoDetailViewControllerに値を渡して表示する
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             if identifier == "PhotoDetailViewSegue" {
 
                 let annotationView = sender as! MKAnnotationView
                 let myPin = annotationView.annotation as! MyAnnotation
 
-                let photoViewCon = segue.destinationViewController as! PhotoDetailViewController
+                let photoViewCon = segue.destination as! PhotoDetailViewController
 
                 if let t = myPin.identity {
                     photoViewCon.photoImage = fetchImage(t)
@@ -454,9 +454,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         // セッション
         session = AVCaptureSession()
         
-        for caputureDevice: AnyObject in AVCaptureDevice.devices() {
+        //for caputureDevice: AnyObject in AVCaptureDevice.devices() {
+        for caputureDevice in AVCaptureDevice.devices() as [AnyObject] {
+
             // 背面カメラを取得
-            if caputureDevice.position == AVCaptureDevicePosition.Back {
+            if caputureDevice.position == AVCaptureDevicePosition.back {
                 camera = caputureDevice as? AVCaptureDevice
             }
             // 前面カメラを取得
@@ -489,27 +491,27 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         // セッションからプレビューを表示を
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
         
-        previewLayer.frame = preView.frame
+        previewLayer?.frame = preView.frame
         
         //        previewLayer.videoGravity = AVLayerVideoGravityResize
         //        previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+        previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         
         // レイヤーをViewに設定
         // これを外すとプレビューが無くなる、けれど撮影はできる
-        self.view.layer.addSublayer(previewLayer)
+        self.view.layer.addSublayer(previewLayer!)
         
         session.startRunning()
     }
     
     func takeStillPicture(){
         // ビデオ出力に接続.
-        if let connection:AVCaptureConnection? = output.connectionWithMediaType(AVMediaTypeVideo){
+        if let connection:AVCaptureConnection? = output.connection(withMediaType: AVMediaTypeVideo){
             // ビデオ出力から画像を非同期で取得
-            output.captureStillImageAsynchronouslyFromConnection(connection, completionHandler: { (imageDataBuffer, error) -> Void in
+            output.captureStillImageAsynchronously(from: connection, completionHandler: { (imageDataBuffer, error) -> Void in
                 
                 // 取得画像のDataBufferをJpegに変換
-                let imageData:NSData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataBuffer)
+                let imageData:Data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataBuffer)
                 
                 // JpegからUIImageを作成.
                 //let image:UIImage = UIImage(data: imageData)!
@@ -523,7 +525,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
 
     // MARK: - 緯度経度から住所を求める
-    func reverseGeoCode(location2D:CLLocationCoordinate2D)
+    func reverseGeoCode(_ location2D:CLLocationCoordinate2D)
     {
         let geocoder = CLGeocoder()
         let location = CLLocation(latitude: location2D.latitude, longitude: location2D.longitude)
@@ -564,21 +566,21 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
 
     // MARK: - 子画面から戻ってきた時に呼ばれる
-    @IBAction func unwindAction(segue: UIStoryboardSegue) {
+    @IBAction func unwindAction(_ segue: UIStoryboardSegue) {
         // とりあえず空
         print(segue.identifier!)
 
         if segue.identifier == "UnwindConfig"
         {
-            let ud = NSUserDefaults()
+            let ud = UserDefaults()
             
-            if let t:Int = ud.integerForKey("TweetRange")
+            if let t:Int = ud.integer(forKey: "TweetRange") as Int?
             {
                 range = Util.DistRangeIdxToMeter(t)
                 labelLog.text = String("\(range)m")
             }
             
-            if let t:Bool = ud.boolForKey("RelationTwitter")
+            if let t:Bool = ud.bool(forKey: "RelationTwitter") as Bool?
             {
                 self.isRelationToTwitter = t
             }
@@ -586,7 +588,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         else if segue.identifier == "UnwindPhotoDetail"
         {
             // Pinを削除する
-            let photoDetailViewCon = segue.sourceViewController as! PhotoDetailViewController
+            let photoDetailViewCon = segue.source as! PhotoDetailViewController
             self.mapView.removeAnnotation(photoDetailViewCon.myPin!)
             
             // CoreDataから削除する
@@ -598,11 +600,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     // MARK: - Delegates
     // MARK: Annotationが表示されるときに呼ばれる
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         if let myAnnotation = annotation as? MyAnnotation
         {
-            print(myAnnotation.identity)
+            print(myAnnotation.identity!)
             
             if myAnnotation === mapView.userLocation { // 現在地を示すアノテーションの場合はデフォルトのまま
                 return nil
@@ -621,7 +623,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 
                 //imageArray[Int(annotation.title!!)!].drawInRect(CGRectMake(0, 0, size.width, size.height))
                 //UIImage(named: "neko.png")!.drawInRect(CGRectMake(0, 0, size.width, size.height))
-                image.drawInRect(CGRectMake(0, 0, size.width, size.height))
+                image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                 
                 let resizeImage = UIGraphicsGetImageFromCurrentImageContext()
                 
@@ -636,7 +638,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 annotationView.canShowCallout = true
                 
                 // Callout(吹き出し)にディスクロージャを表示する
-                annotationView.rightCalloutAccessoryView = UIButton(type: UIButtonType.DetailDisclosure)
+                annotationView.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure)
                 
                 return annotationView
             }
@@ -645,8 +647,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // MARK: Callout(吹き出し)をタップした時に呼ばれる
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        self.performSegueWithIdentifier("PhotoDetailViewSegue", sender: view)
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        self.performSegue(withIdentifier: "PhotoDetailViewSegue", sender: view)
         
         // Annotation を非選択にして Callout(吹き出し)を非表示にする
         mapView.deselectAnnotation(view.annotation, animated: true)
@@ -712,7 +714,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
 //    }
 
     // MARK: 位置情報が更新された時に呼ばれる
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         self.mapView.showsUserLocation = true
         
@@ -742,7 +744,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 let cur = CLLocation(latitude: self.lastLocation!.latitude,longitude:self.lastLocation!.longitude)
                 let twd = CLLocation(latitude: self.lastPostLocation!.latitude,longitude:self.lastPostLocation!.longitude)
                 
-                let dist = cur.distanceFromLocation(twd)
+                let dist = cur.distance(from: twd)
                 print("Diff:\(dist)")
                 
                 if(dist > Double(range))

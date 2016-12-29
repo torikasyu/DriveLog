@@ -15,11 +15,11 @@ import CoreData
 extension Photo {
 
     @NSManaged var address: String?
-    @NSManaged var image: NSData?
+    @NSManaged var image: Data?
     @NSManaged var latitude: NSNumber?
     @NSManaged var longiture: NSNumber?
     @NSManaged var memo: String?
     @NSManaged var photoid: String?
-    @NSManaged var date: NSDate?
+    @NSManaged var date: Date?
 
 }
