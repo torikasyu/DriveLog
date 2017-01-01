@@ -57,11 +57,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F51F27171E16870B004C8375 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				F59902321CD5ED8200D968B0 /* Photo.xcdatamodeld */,
+				F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */,
+				F586FFDC1CDB31E50049FA89 /* Photo.swift */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		F5BD3E891CCCFED700B446CE = {
 			isa = PBXGroup;
 			children = (
-				F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */,
-				F586FFDC1CDB31E50049FA89 /* Photo.swift */,
+				F51F27171E16870B004C8375 /* CoreData */,
 				F5344E451CCE5B0900D642B6 /* Social.framework */,
 				F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */,
 				F5BD3E941CCCFED800B446CE /* DriveLog_swift */,
@@ -80,18 +89,17 @@
 		F5BD3E941CCCFED800B446CE /* DriveLog_swift */ = {
 			isa = PBXGroup;
 			children = (
+				F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */,
+				F5BD3E991CCCFED800B446CE /* Main.storyboard */,
+				F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */,
 				F55153BA1D578B8E00C1C49C /* neko.png */,
 				F5BD3E951CCCFED800B446CE /* AppDelegate.swift */,
-				F59902321CD5ED8200D968B0 /* Photo.xcdatamodeld */,
 				F5BD3E971CCCFED800B446CE /* ViewController.swift */,
 				F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */,
-				F5BD3E991CCCFED800B446CE /* Main.storyboard */,
-				F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */,
-				F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */,
-				F5BD3EA11CCCFED800B446CE /* Info.plist */,
 				F525F64C1CCFADBA00B4B9B9 /* Util.swift */,
 				F59902031CD4372D00D968B0 /* ConfigViewController.swift */,
 				F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */,
+				F5BD3EA11CCCFED800B446CE /* Info.plist */,
 			);
 			path = DriveLog_swift;
 			sourceTree = "<group>";
@@ -348,7 +356,8 @@
 				F59902331CD5ED8200D968B0 /* Photo.xcdatamodel */,
 			);
 			currentVersion = F59902331CD5ED8200D968B0 /* Photo.xcdatamodel */;
-			path = Photo.xcdatamodeld;
+			name = Photo.xcdatamodeld;
+			path = DriveLog_swift/Photo.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

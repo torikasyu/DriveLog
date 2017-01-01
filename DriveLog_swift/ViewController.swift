@@ -13,11 +13,25 @@ import Accounts
 import Social
 import CoreData
 
+/*
+extension UIView {
+    func toImage() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0.0)
+        let context = UIGraphicsGetCurrentContext()
+        context!.translateBy(x: 0.0, y: 0.0)
+        self.layer.render(in: context!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+}
+*/
+
 class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate,AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // MARK: - プロパティ
-    //var timer:NSTimer!
-    var isAutoCaptureMode:Bool! = false
+    var isAutoCaptureMode:Bool = false
     
     let locationManager:CLLocationManager = CLLocationManager()
     var initMap = false
@@ -25,11 +39,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     var address:String?
     
     // For AVCapture
-    var input:AVCaptureDeviceInput!
-    var output:AVCaptureStillImageOutput!
+    var input:AVCaptureDeviceInput?
+    
+    //var output:AVCaptureStillImageOutput!
+    var output:AVCaptureVideoDataOutput!
+    
     var session:AVCaptureSession!
-    var preView:UIView!
-    var camera:AVCaptureDevice!
+    //var preView:UIView!
+    var camera:AVCaptureDevice?
     
     var captureImageData:Data?
     
@@ -38,7 +55,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     // Twitter Param
     var lastPostLocation:CLLocationCoordinate2D?
-    var range:Int!
+    var range:Int?
     var isRelationToTwitter = false
 
     // CoreData
@@ -86,12 +103,26 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         print("doCapture")
         
         //画像添付
-        var imageData:Data!
+        var imageData:Data? = nil
         if isAvailableVideo {
-            //self.captureSession.stopRunning()
-            //imageData = UIImageJPEGRepresentation(self.imageViewVideo.image!,1)!
-            //self.captureSession.startRunning()
             
+            
+            /*  still image
+            let connection = output.connection(withMediaType: AVMediaTypeVideo)
+            output.captureStillImageAsynchronously(from: connection, completionHandler: { (imageDataBuffer, error)->Void in
+                let myImageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataBuffer)
+                //_ = UIImage(data: myImageData!)!
+                imageData = myImageData
+            })
+            */
+            
+            if (session != nil) {
+                self.session!.stopRunning()
+                imageData = UIImageJPEGRepresentation(self.imageViewVideo.image!,1)!
+                //imageData = UIImageJPEGRepresentation(self.preView.toImage()!,1)
+                self.session!.startRunning()
+            }
+            /*
             self.takeStillPicture()
             if let t = self.captureImageData
             {
@@ -102,8 +133,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 print("no captureImage")
                 return
             }
+            */
         }
-        else
+        
+        if (imageData == nil)
         {
             imageData = UIImageJPEGRepresentation(UIImage(named: "neko.png")!,1)!
         }
@@ -126,7 +159,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         if(self.isRelationToTwitter)
         {
-            self.postTweet(imageData)
+            self.postTweet(imageData!)
         }
         
         if let t:CLLocationCoordinate2D = lastLocation
@@ -193,7 +226,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         
         // ビデオ画像ストリーミング開始
-        //self.configureCamera()
+        self.configureCamera()
         
         // CoreData Load Test
         self.fetchCoreData()
@@ -202,37 +235,40 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     // メモリ管理のため
     override func viewWillAppear(_ animated: Bool) {
         // スクリーン設定
-        setupDisplay()
+        //setupDisplay()
         // カメラの設定
-        setupCamera()
+        //setupCamera()
     }
     
     // メモリ管理のため
     override func viewDidDisappear(_ animated: Bool) {
         // camera stop メモリ解放
-        session.stopRunning()
-        
-        for output in session.outputs {
-            session.removeOutput(output as? AVCaptureOutput)
-        }
-        
-        for input in session.inputs {
-            session.removeInput(input as? AVCaptureInput)
-        }
-        session = nil
-        camera = nil
+//        if (session != nil)
+//        {
+//            session!.stopRunning()
+//            
+//            for output in session!.outputs {
+//                session!.removeOutput(output as? AVCaptureOutput)
+//            }
+//            
+//            for input in session!.inputs {
+//                session!.removeInput(input as? AVCaptureInput)
+//            }
+//            session = nil
+//            camera = nil
+//        }
     }
     
-    func setupDisplay(){
-        //スクリーンの幅
-        let screenWidth = UIScreen.main.bounds.size.width;
-        //スクリーンの高さ
-        let screenHeight = UIScreen.main.bounds.size.width*3/4;
-        
-        // プレビュー用のビューを生成
-        preView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight))
-        
-    }
+//    func setupDisplay(){
+//        //スクリーンの幅
+//        let screenWidth = UIScreen.main.bounds.size.width;
+//        //スクリーンの高さ
+//        let screenHeight = UIScreen.main.bounds.size.width*3/4;
+//        
+//        // プレビュー用のビューを生成
+//        preView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight))
+//        
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -370,59 +406,59 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // MARK: - カメラとストリーミングのセットアップ
-//    func configureCamera()
-//    {
-//        captureSession = AVCaptureSession()
-//        //captureSession.sessionPreset = AVCaptureSessionPresetMedium
-//        captureSession.sessionPreset = AVCaptureSessionPresetHigh
-//        
-//        var camera:AVCaptureDevice!
-//        var videoInput:AVCaptureDeviceInput! = nil
-//        
-//        // find back camera
-//        for caputureDevice: AnyObject in AVCaptureDevice.devices() {
-//            // 背面カメラを取得
-//            if caputureDevice.position == AVCaptureDevicePosition.Back {
-//                camera = caputureDevice as? AVCaptureDevice
-//            }
-//        }
-//        
-//        if camera == nil
-//        {
-//            isAvailableVideo = false
-//            return
-//        }
-//        
-//        // カメラからの入力データ
-//        do {
-//            videoInput = try AVCaptureDeviceInput(device: camera) as AVCaptureDeviceInput
-//        } catch let error as NSError {
-//            print(error)
-//        }
-//        
-//        if captureSession.canAddInput(videoInput)
-//        {
-//            captureSession.addInput(videoInput)
-//        }
-//
-//        
-//        let dataOutput = AVCaptureVideoDataOutput()
-//        dataOutput.setSampleBufferDelegate(self, queue:dispatch_get_main_queue())
-//        dataOutput.videoSettings = [
-//            kCVPixelBufferPixelFormatTypeKey : Int(kCVPixelFormatType_32BGRA)
-//        ]
-//        captureSession.addOutput(dataOutput)
-//        
-//        /// preview test
-//        
+    func configureCamera()
+    {
+        session = AVCaptureSession()
+        session.sessionPreset = AVCaptureSessionPresetMedium
+        //session.sessionPreset = AVCaptureSessionPresetHigh
+
+        output = AVCaptureVideoDataOutput()
+        //output = AVCaptureStillImageOutput()
+        
+        var camera:AVCaptureDevice!
+        var videoInput:AVCaptureDeviceInput! = nil
+        
+        // find back camera
+        for caputureDevice: AnyObject in AVCaptureDevice.devices() as [AnyObject] {
+            // 背面カメラを取得
+            if caputureDevice.position == AVCaptureDevicePosition.back {
+                camera = caputureDevice as? AVCaptureDevice
+            }
+        }
+        
+        if camera == nil
+        {
+            isAvailableVideo = false
+            return
+        }
+        
+        // カメラからの入力データ
+        do {
+            videoInput = try AVCaptureDeviceInput(device: camera) as AVCaptureDeviceInput
+        } catch let error as NSError {
+            print(error)
+        }
+        
+        if session.canAddInput(videoInput)
+        {
+            session.addInput(videoInput)
+        }
+
+        output.setSampleBufferDelegate(self, queue:DispatchQueue.main)
+        output.videoSettings = [
+            kCVPixelBufferPixelFormatTypeKey as AnyHashable : Int(kCVPixelFormatType_32BGRA)
+        ]
+        session.addOutput(output)
+        
+        /// preview test
 //        //スクリーンの幅
-//        let screenWidth = UIScreen.mainScreen().bounds.size.width;
+//        let screenWidth = UIScreen.main.bounds.size.width;
 //        //スクリーンの高さ
-//        let screenHeight = UIScreen.mainScreen().bounds.size.height;
+//        let screenHeight = UIScreen.main.bounds.size.height;
 //        // プレビュー用のビューを生成
-//        preView = UIView(frame: CGRectMake(0.0, 0.0, screenWidth, screenHeight))
+//        preView = UIView(frame: CGRect(x:0.0, y:0.0, width:screenWidth, height:screenHeight/2))
 //
-//        let captureVideoPreviewLayer:AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+//        let captureVideoPreviewLayer:AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.session)
 //        captureVideoPreviewLayer.frame = self.view.bounds;
 //        captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 //
@@ -431,97 +467,98 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
 //        previewLayer.addSublayer(captureVideoPreviewLayer);
 //        
 //        self.view.addSubview(self.preView!)
-//        ///
-//        
-//        captureSession.startRunning()
-//        
-//        do {
-//            
-//            if camera != nil
-//            {
-//                try camera.lockForConfiguration()
-//                // フレームレート
-//                camera.activeVideoMinFrameDuration = CMTimeMake(1, 15)
-//                
-//                camera.unlockForConfiguration()
-//            }
-//        } catch _ {
-//        }
-//    }
-    
-    func setupCamera(){
+        ///
         
-        // セッション
-        session = AVCaptureSession()
         
-        //for caputureDevice: AnyObject in AVCaptureDevice.devices() {
-        for caputureDevice in AVCaptureDevice.devices() as [AnyObject] {
-
-            // 背面カメラを取得
-            if caputureDevice.position == AVCaptureDevicePosition.back {
-                camera = caputureDevice as? AVCaptureDevice
-            }
-            // 前面カメラを取得
-            //if caputureDevice.position == AVCaptureDevicePosition.Front {
-            //    camera = caputureDevice as? AVCaptureDevice
-            //}
-        }
-        
-        // カメラからの入力データ
         do {
-            input = try AVCaptureDeviceInput(device: camera) as AVCaptureDeviceInput
-        } catch let error as NSError {
-            print(error)
-            self.isAvailableVideo = false
-            return
+            
+            if camera != nil
+            {
+                try camera.lockForConfiguration()
+                // フレームレート
+                camera.activeVideoMinFrameDuration = CMTimeMake(1, 10)
+                camera.unlockForConfiguration()
+            }
+        } catch _ {
         }
-        
-        // 入力をセッションに追加
-        if(session.canAddInput(input)) {
-            session.addInput(input)
-        }
-        
-        // 静止画出力のインスタンス生成
-        output = AVCaptureStillImageOutput()
-        // 出力をセッションに追加
-        if(session.canAddOutput(output)) {
-            session.addOutput(output)
-        }
-        
-        // セッションからプレビューを表示を
-        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        
-        previewLayer?.frame = preView.frame
-        
-        //        previewLayer.videoGravity = AVLayerVideoGravityResize
-        //        previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-        
-        // レイヤーをViewに設定
-        // これを外すとプレビューが無くなる、けれど撮影はできる
-        self.view.layer.addSublayer(previewLayer!)
-        
+
         session.startRunning()
     }
     
-    func takeStillPicture(){
-        // ビデオ出力に接続.
-        if let connection:AVCaptureConnection? = output.connection(withMediaType: AVMediaTypeVideo){
-            // ビデオ出力から画像を非同期で取得
-            output.captureStillImageAsynchronously(from: connection, completionHandler: { (imageDataBuffer, error) -> Void in
-                
-                // 取得画像のDataBufferをJpegに変換
-                let imageData:Data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataBuffer)
-                
-                // JpegからUIImageを作成.
-                //let image:UIImage = UIImage(data: imageData)!
-                self.captureImageData = imageData
-                
-                // アルバムに追加.
-                UIImageWriteToSavedPhotosAlbum(UIImage(data:imageData)!, self, nil, nil)
-            })
-        }
-    }
+//    func setupCamera(){
+//        
+//        // セッション
+//        session = AVCaptureSession()
+//        
+//        //for caputureDevice: AnyObject in AVCaptureDevice.devices() {
+//        for caputureDevice in AVCaptureDevice.devices() as [AnyObject] {
+//
+//            // 背面カメラを取得
+//            if caputureDevice.position == AVCaptureDevicePosition.back {
+//                camera = caputureDevice as? AVCaptureDevice
+//            }
+//            // 前面カメラを取得
+//            //if caputureDevice.position == AVCaptureDevicePosition.Front {
+//            //    camera = caputureDevice as? AVCaptureDevice
+//            //}
+//        }
+//        
+//        // カメラからの入力データ
+//        do {
+//            input = try AVCaptureDeviceInput(device: camera) as AVCaptureDeviceInput
+//        } catch let error as NSError {
+//            print(error)
+//            self.isAvailableVideo = false
+//            return
+//        }
+//        
+//        // 入力をセッションに追加
+//        if(session.canAddInput(input)) {
+//            session.addInput(input)
+//        }
+//        
+//        // 静止画出力のインスタンス生成
+//        output = AVCaptureStillImageOutput()
+//        // 出力をセッションに追加
+//        if(session.canAddOutput(output)) {
+//            session.addOutput(output)
+//        }
+//        
+//        // セッションからプレビューを表示を
+//        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+//        
+//        previewLayer?.frame = preView.frame
+//        
+//        //        previewLayer.videoGravity = AVLayerVideoGravityResize
+//        //        previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
+//        previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+//        
+//        // レイヤーをViewに設定
+//        // これを外すとプレビューが無くなる、けれど撮影はできる
+//        self.view.layer.addSublayer(previewLayer!)
+//        
+//        session.startRunning()
+//    }
+
+    
+//    func takeStillPicture(){
+//        // ビデオ出力に接続.
+//        if let connection:AVCaptureConnection? = output.connection(withMediaType: AVMediaTypeVideo){
+//            // ビデオ出力から画像を非同期で取得
+//            output.captureStillImageAsynchronously(from: connection, completionHandler: { (imageDataBuffer, error) -> Void in
+//                
+//                // 取得画像のDataBufferをJpegに変換
+//                let imageData:Data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataBuffer)
+//                
+//                // JpegからUIImageを作成.
+//                //let image:UIImage = UIImage(data: imageData)!
+//                self.captureImageData = imageData
+//                
+//                // アルバムに追加.
+//                UIImageWriteToSavedPhotosAlbum(UIImage(data:imageData)!, self, nil, nil)
+//            })
+//        }
+//    }
     
 
     // MARK: - 緯度経度から住所を求める
@@ -655,63 +692,63 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     // MARK: キャプチャーの取得時に呼ばれる
-//    func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-//
-//        //イメージバッファーの取得
-//        let buffer:CVImageBufferRef!
-//        buffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-//        
-//        //イメージバッファーのロック
-//        CVPixelBufferLockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
-//        
-//        // イメージバッファ情報の取得
-//        //var base: UInt8
-//        var width: size_t
-//        var height: size_t
-//        var bytesPerRow: size_t
-//        
-//        let base = UnsafeMutablePointer<UInt8>(CVPixelBufferGetBaseAddress(buffer));
-//        width = CVPixelBufferGetWidth(buffer);
-//        height = CVPixelBufferGetHeight(buffer);
-//        bytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
-//        
-//        // ビットマップコンテキストの作成
-//        var colorSpace:CGColorSpaceRef!
-//        var cgContext:CGContextRef!
-//        colorSpace = CGColorSpaceCreateDeviceRGB();
-//        
-//        //let bitmapInfo:CGBitmapInfo = [.ByteOrder32Little, CGBitmapInfo(rawValue: ~CGBitmapInfo.AlphaInfoMask.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue)]
-//        
-//        let bitmapInfo = CGBitmapInfo(rawValue: (CGBitmapInfo.ByteOrder32Little.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue) as UInt32)
-//        
-//        cgContext = CGBitmapContextCreate(
-//            base,
-//            width,
-//            height,
-//            8,
-//            bytesPerRow,
-//            colorSpace,
-//            bitmapInfo.rawValue
-//        );
-//        
-//        //CGColorSpaceRelease(colorSpace);
-//        
-//        // 画像の作成
-//        var cgImage:CGImageRef!
-//        var image:UIImage!
-//        cgImage = CGBitmapContextCreateImage(cgContext);
-//        
-//        //image = [UIImage imageWithCGImage:cgImage scale:1.0f orientation:UIImageOrientationRight];
-//        image = UIImage(CGImage: cgImage, scale: 1.0, orientation: UIImageOrientation.Right);
-//        //CGImageRelease(cgImage);
-//        //CGContextRelease(cgContext);
-//        
-//        // イメージバッファのアンロック
-//        CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)));
-//        
-//        // 画像の表示
-//        imageViewVideo.image = image;
-//    }
+    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+
+        //イメージバッファーの取得
+        let buffer:CVImageBuffer!
+        buffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+        
+        //イメージバッファーのロック
+        CVPixelBufferLockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
+        
+        // イメージバッファ情報の取得
+        //var base: UInt8
+        var width: size_t
+        var height: size_t
+        var bytesPerRow: size_t
+        
+        let base = UnsafeMutableRawPointer(CVPixelBufferGetBaseAddress(buffer));
+        width = CVPixelBufferGetWidth(buffer);
+        height = CVPixelBufferGetHeight(buffer);
+        bytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+        
+        // ビットマップコンテキストの作成
+        var colorSpace:CGColorSpace!
+        var cgContext:CGContext!
+        colorSpace = CGColorSpaceCreateDeviceRGB();
+        
+        //let bitmapInfo:CGBitmapInfo = [.ByteOrder32Little, CGBitmapInfo(rawValue: ~CGBitmapInfo.AlphaInfoMask.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue)]
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: (CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue) as UInt32)
+        
+        cgContext = CGContext(
+            data: base,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo.rawValue
+        );
+        
+        //CGColorSpaceRelease(colorSpace);
+        
+        // 画像の作成
+        var cgImage:CGImage!
+        var image:UIImage!
+        cgImage = cgContext.makeImage();
+        
+        //image = [UIImage imageWithCGImage:cgImage scale:1.0f orientation:UIImageOrientationRight];
+        image = UIImage(cgImage: cgImage, scale: 1.0, orientation: UIImageOrientation.right);
+        //CGImageRelease(cgImage);
+        //CGContextRelease(cgContext);
+        
+        // イメージバッファのアンロック
+        CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)));
+        
+        // 画像の表示
+        imageViewVideo.image = image;
+    }
 
     // MARK: 位置情報が更新された時に呼ばれる
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -734,7 +771,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             initMap = true
         }
         
-        if(self.isAutoCaptureMode!)
+        if(self.isAutoCaptureMode)
         {
             // 前回の位置から離れたか判断して、離れている場合はキャプチャの保存を実行する
             var isPost = false;
@@ -747,7 +784,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 let dist = cur.distance(from: twd)
                 print("Diff:\(dist)")
                 
-                if(dist > Double(range))
+                if(dist > Double(range!))
                 {
                     isPost = true
                 }
