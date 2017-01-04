@@ -22,6 +22,7 @@
 		F5BD3E9D1CCCFED800B446CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */; };
 		F5BD3EA01CCCFED800B446CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */; };
 		F5BD3EA81CCD05A800B446CE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */; };
+		F5FEAF5B1E1CD6A60039FD92 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FEAF5A1E1CD6A60039FD92 /* PreviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		F5BD3E9F1CCCFED800B446CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F5BD3EA11CCCFED800B446CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F5BD3EA71CCD05A800B446CE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F5FEAF5A1E1CD6A60039FD92 /* PreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreviewViewController.swift; path = ../PreviewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +98,9 @@
 				F5BD3E951CCCFED800B446CE /* AppDelegate.swift */,
 				F5BD3E971CCCFED800B446CE /* ViewController.swift */,
 				F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */,
-				F525F64C1CCFADBA00B4B9B9 /* Util.swift */,
+				F5FEAF5A1E1CD6A60039FD92 /* PreviewViewController.swift */,
 				F59902031CD4372D00D968B0 /* ConfigViewController.swift */,
+				F525F64C1CCFADBA00B4B9B9 /* Util.swift */,
 				F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */,
 				F5BD3EA11CCCFED800B446CE /* Info.plist */,
 			);
@@ -181,6 +184,7 @@
 				F586FFDE1CDB31E50049FA89 /* Photo.swift in Sources */,
 				F586FFDD1CDB31E50049FA89 /* Photo+CoreDataProperties.swift in Sources */,
 				F5BD3E981CCCFED800B446CE /* ViewController.swift in Sources */,
+				F5FEAF5B1E1CD6A60039FD92 /* PreviewViewController.swift in Sources */,
 				F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */,
 				F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */,
 				F59902341CD5ED8200D968B0 /* Photo.xcdatamodeld in Sources */,

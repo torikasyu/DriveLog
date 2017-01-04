@@ -31,7 +31,7 @@ extension UIView {
 class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate,AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // MARK: - プロパティ
-    var isAutoCaptureMode:Bool = false
+    var isAutoCaptureMode:Bool = false  //自動撮影モード
     
     let locationManager:CLLocationManager = CLLocationManager()
     var initMap = false
@@ -199,7 +199,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         }
         else
         {
-            range = 50;
+            range = 100;
         }
         
         locationManager.delegate = self
