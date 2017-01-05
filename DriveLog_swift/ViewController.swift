@@ -48,7 +48,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     //var preView:UIView!
     var camera:AVCaptureDevice?
     
-    var captureImageData:Data?
+    var capturedImage:UIImage?
     
     // Videoが使用可能かどうか
     var isAvailableVideo = true
@@ -75,7 +75,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
     
     @IBAction func btnCapture(_ sender: AnyObject) {
-        self.doCapture()
+        self.doCapture(manualMode:true)
     }
     
     @IBAction func btnAutoCapture(_ sender: AnyObject) {
@@ -98,7 +98,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     // MARK: - Methods
     // MARK: キャプチャの保存を実行する
-    func doCapture()
+    
+    func doCapture(manualMode:Bool = false)
     {
         print("doCapture")
         
@@ -106,6 +107,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         var imageData:Data? = nil
         if isAvailableVideo {
             
+            if (session != nil) {
+                self.session!.stopRunning()
+                imageData = UIImageJPEGRepresentation(self.imageViewVideo.image!,1)!
+                //imageData = UIImageJPEGRepresentation(self.preView.toImage()!,1)
+                self.session!.startRunning()
+            }
             
             /*  still image
             let connection = output.connection(withMediaType: AVMediaTypeVideo)
@@ -116,12 +123,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             })
             */
             
-            if (session != nil) {
-                self.session!.stopRunning()
-                imageData = UIImageJPEGRepresentation(self.imageViewVideo.image!,1)!
-                //imageData = UIImageJPEGRepresentation(self.preView.toImage()!,1)
-                self.session!.startRunning()
-            }
             /*
             self.takeStillPicture()
             if let t = self.captureImageData
@@ -141,49 +142,59 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             imageData = UIImageJPEGRepresentation(UIImage(named: "neko.png")!,1)!
         }
 
-        // Save Data to CoreData
-        let photo = Photo(entity: entryDescription, insertInto: managedContext)
-        
-        if let t = self.address { photo.address = t}
-        photo.latitude = lastLocation!.latitude as NSNumber?
-        photo.longiture = lastLocation!.longitude as NSNumber?
-        photo.image = imageData
-        photo.photoid = UUID().uuidString
-        photo.date = Date()
-        
-        do {
-            try managedContext.save()
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        }
-        
-        if(self.isRelationToTwitter)
+        if (manualMode)
         {
-            self.postTweet(imageData!)
+            self.capturedImage = UIImage.init(data: imageData!) //for preview
+            self.performSegue(withIdentifier: "previewSegue", sender: nil)
         }
-        
-        if let t:CLLocationCoordinate2D = lastLocation
+        else
         {
-            let format = DateFormatter()
-            format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-            let pin = MyAnnotation(location: t)
-            pin.identity = photo.photoid
-            pin.title = format.string(from: photo.date! as Date)
-            pin.subtitle = photo.address!
+            // Save Data to CoreData
+            let photo = Photo(entity: entryDescription, insertInto: managedContext)
             
-            // 地図にピンを立てる
-            mapView.addAnnotation(pin)
+            if let t = self.address { photo.address = t}
+            photo.latitude = lastLocation!.latitude as NSNumber?
+            photo.longiture = lastLocation!.longitude as NSNumber?
+            photo.image = imageData
+            photo.photoid = UUID().uuidString
+            photo.date = Date()
+            
+            do {
+                try managedContext.save()
+            } catch let error as NSError  {
+                print("Could not save \(error), \(error.userInfo)")
+            }
+            
+            if(self.isRelationToTwitter)
+            {
+                self.postTweet(imageData!)
+            }
+            
+            if let t:CLLocationCoordinate2D = lastLocation
+            {
+                let format = DateFormatter()
+                format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+                let pin = MyAnnotation(location: t)
+                pin.identity = photo.photoid
+                pin.title = format.string(from: photo.date! as Date)
+                pin.subtitle = photo.address!
+                
+                // 地図にピンを立てる
+                mapView.addAnnotation(pin)
+            }
+            
+            // Postした位置を記録して次回の距離差分判定に使用する
+            lastPostLocation = lastLocation
         }
-        
-        // Postした位置を記録して次回の距離差分判定に使用する
-        lastPostLocation = lastLocation
         
     }
     
     // MARK: - ViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         // CoreData
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -385,10 +396,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         }
     }
     
-    // MARK: - 遷移先の PhotoDetailViewControllerに値を渡して表示する
+    // MARK: - 遷移先のSegue(ViewController)に値を渡して表示する
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
-            if identifier == "PhotoDetailViewSegue" {
+            
+            print(identifier)
+            
+            if identifier == "PhotoDetailViewSegue"
+            {
 
                 let annotationView = sender as! MKAnnotationView
                 let myPin = annotationView.annotation as! MyAnnotation
@@ -401,6 +416,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                     photoViewCon.myPin = myPin
                     photoViewCon.address = myPin.subtitle                    
                 }
+            }
+            else if identifier == "previewSegue"
+            {
+                let previewCon = segue.destination as! PreviewViewController
+                //previewCon.imageView.image = self.capturedImage
+                //previewCon.textbotTweet.text = "ほげほげほげ"
+                previewCon.photoImage = self.capturedImage
+                previewCon.tweetText = "ほげーー"
             }
         }
     }
@@ -796,7 +819,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             
             if isPost
             {
-                self.doCapture()
+                self.doCapture(manualMode: false)
             }
         }
         

@@ -6,13 +6,15 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Preview-->
         <scene sceneID="IKb-sR-L6I">
             <objects>
-                <viewController title="Preview" id="lKg-N3-EYr" sceneMemberID="viewController">
+                <viewController title="Preview" id="lKg-N3-EYr" customClass="PreviewViewController" customModule="DriveLog_swift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hhj-QT-RFq"/>
                         <viewControllerLayoutGuide type="bottom" id="iEZ-av-ZWb"/>
@@ -29,11 +31,17 @@
                                 <rect key="frame" x="149" y="593" width="48" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="btnCancel_tapped:" destination="lKg-N3-EYr" eventType="touchUpInside" id="Kit-fo-B6V"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmT-pi-tAU">
                                 <rect key="frame" x="156" y="539" width="34" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="btnSave_tapped:" destination="lKg-N3-EYr" eventType="touchUpInside" id="KKx-eL-d5M"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WAJ-Au-rWf">
                                 <rect key="frame" x="36" y="405" width="303" height="30"/>
@@ -56,6 +64,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="c2k-Al-Tob"/>
+                    <connections>
+                        <outlet property="imageView" destination="WS2-na-K5v" id="GQP-ne-jdl"/>
+                        <outlet property="switchTweet" destination="Vmg-7U-eU4" id="qL0-5m-Gg9"/>
+                        <outlet property="textboxTweet" destination="WAJ-Au-rWf" id="Kfm-rW-jk0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ySI-lm-Otu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -89,24 +103,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vAY-ql-yw8">
-                                <rect key="frame" x="0.0" y="64" width="375" height="557"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vAY-ql-yw8">
+                                <rect key="frame" x="-62.5" y="20" width="500" height="667"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="vAY-ql-yw8" secondAttribute="height" multiplier="3:4" id="iN7-2m-cFE"/>
+                                </constraints>
                             </imageView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0le-3Q-kUs">
-                                <rect key="frame" x="0.0" y="317" width="375" height="304"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0le-3Q-kUs">
+                                <rect key="frame" x="0.0" y="289.5" width="375" height="333.5"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHH-gp-oRA">
-                                <rect key="frame" x="20" y="513" width="93" height="30"/>
+                                <rect key="frame" x="262" y="535" width="32" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Start Capture"/>
+                                <state key="normal" title="Auto"/>
                                 <connections>
                                     <action selector="btnAutoCapture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PL0-Eu-NvN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVV-ZN-o33">
-                                <rect key="frame" x="20" y="475" width="67" height="30"/>
+                                <rect key="frame" x="44" y="535" width="67" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Capture"/>
                                 <connections>
@@ -128,7 +143,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCc-el-YDj">
-                                <rect key="frame" x="20" y="406" width="46" height="30"/>
+                                <rect key="frame" x="44" y="585" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Config"/>
                                 <connections>
@@ -137,6 +152,15 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="vAY-ql-yw8" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="3NV-yw-LQb"/>
+                            <constraint firstItem="vAY-ql-yw8" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="7kf-5q-HEg"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="0le-3Q-kUs" secondAttribute="bottom" id="PMN-Hu-KKj"/>
+                            <constraint firstItem="vAY-ql-yw8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wpy-w1-ee2"/>
+                            <constraint firstItem="0le-3Q-kUs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XBW-OL-s11"/>
+                            <constraint firstItem="0le-3Q-kUs" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="bR1-Cu-Pcy"/>
+                            <constraint firstItem="0le-3Q-kUs" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="grf-5y-16x"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="rfA-Oc-EkU"/>
@@ -148,7 +172,7 @@
                         <outlet property="labelLog" destination="Iyi-uo-9GP" id="Zhi-rG-te8"/>
                         <outlet property="mapView" destination="0le-3Q-kUs" id="Tit-HC-Cfp"/>
                         <segue destination="j1R-kw-Dqe" kind="push" identifier="PhotoDetailViewSegue" id="wg7-cU-AdQ"/>
-                        <segue destination="lKg-N3-EYr" kind="modal" identifier="previewSegue" id="yoe-bk-bfb"/>
+                        <segue destination="lKg-N3-EYr" kind="push" identifier="previewSegue" id="yoe-bk-bfb"/>
                         <segue destination="TTH-ZT-Ssv" kind="push" identifier="configSegue" id="ze3-g2-NqO"/>
                     </connections>
                 </viewController>

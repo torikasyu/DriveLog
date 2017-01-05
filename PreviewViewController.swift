@@ -9,10 +9,29 @@
 import UIKit
 
 class PreviewViewController: UIViewController {
+    
+    var photoImage:UIImage?
+    var tweetText:String?
 
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var textboxTweet: UITextField!
+    @IBOutlet weak var switchTweet: UISwitch!
+    
+
+    @IBAction func btnSave_tapped(_ sender: Any) {
+    }
+    
+    @IBAction func btnCancel_tapped(_ sender: Any) {
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.imageView.image = photoImage!
+        self.textboxTweet.text = tweetText!
+        
         // Do any additional setup after loading the view.
     }
 
@@ -21,6 +40,13 @@ class PreviewViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 
     /*
     // MARK: - Navigation

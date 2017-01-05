@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveLog_swift/ViewController.swift"
-            timestampString = "504979042.291285"
+            timestampString = "505294254.167926"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "doCapture()"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "doCapture(manualMode:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
