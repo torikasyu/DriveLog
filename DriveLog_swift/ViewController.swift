@@ -654,7 +654,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             // CoreDataから削除する
             self.deleteCoreData(photoDetailViewCon.myPin!.identity!)
         }
-        
+        else if segue.identifier == "UnwindPreview"
+        {
+            print("unwind save")
+        }
         
     }
     
@@ -768,9 +771,17 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         // イメージバッファのアンロック
         CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)));
+
+ 
+        // クリッピング
+        let imageW = image.size.width
+        let cropCGImageRef = image.cgImage!.cropping(to: CGRect(x:0, y:0, width:imageW, height:imageW))
+        let cropImage = UIImage(cgImage: cropCGImageRef!,scale: 1.0, orientation:UIImageOrientation.right)
         
         // 画像の表示
-        imageViewVideo.image = image;
+        //imageViewVideo.image = image;
+        imageViewVideo.image = cropImage;
+
     }
 
     // MARK: 位置情報が更新された時に呼ばれる

@@ -11,7 +11,7 @@ import UIKit
 class PreviewViewController: UIViewController {
     
     var photoImage:UIImage?
-    var tweetText:String?
+    var tweetText:String = ""
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var textboxTweet: UITextField!
@@ -19,18 +19,16 @@ class PreviewViewController: UIViewController {
     
 
     @IBAction func btnSave_tapped(_ sender: Any) {
+        //unwind action
     }
-    
-    @IBAction func btnCancel_tapped(_ sender: Any) {
-    }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.imageView.image = photoImage!
-        self.textboxTweet.text = tweetText!
+        if let t = photoImage {
+            self.imageView.image = t
+        }
+        self.textboxTweet.text = tweetText
         
         // Do any additional setup after loading the view.
     }
