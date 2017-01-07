@@ -10,25 +10,33 @@ import UIKit
 
 class PreviewViewController: UIViewController {
     
-    var photoImage:UIImage?
-    var tweetText:String = ""
+    //var photoImage:UIImage?
+    //var tweetText:String = ""
 
+    var mp:MyPhoto?
+    var isAutoConfirm = false
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var textboxTweet: UITextField!
-    @IBOutlet weak var switchTweet: UISwitch!
     
-
     @IBAction func btnSave_tapped(_ sender: Any) {
+        //unwind action
+    }
+    @IBAction func btnCancel_tapped(_ sender: Any) {
         //unwind action
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let t = photoImage {
-            self.imageView.image = t
+        if let t = mp?.image {
+            self.imageView.image = UIImage(data: t)
         }
-        self.textboxTweet.text = tweetText
+        self.textboxTweet.text = mp?.address
+        if(isAutoConfirm)
+        {
+            self.textboxTweet.text = self.textboxTweet.text! + "[Auto Mode]"
+        }
         
         // Do any additional setup after loading the view.
     }
@@ -39,7 +47,7 @@ class PreviewViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

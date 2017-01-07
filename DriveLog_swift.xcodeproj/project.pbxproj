@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F525F64C1CCFADBA00B4B9B9 /* Util.swift */; };
+		F5272FEA1E1FD19F0071C72D /* MyPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5272FE91E1FD19F0071C72D /* MyPhoto.swift */; };
 		F5344E461CCE5B0900D642B6 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5344E451CCE5B0900D642B6 /* Social.framework */; };
 		F55153BB1D578B8E00C1C49C /* neko.png in Resources */ = {isa = PBXBuildFile; fileRef = F55153BA1D578B8E00C1C49C /* neko.png */; };
 		F586FFDD1CDB31E50049FA89 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		F525F64C1CCFADBA00B4B9B9 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		F5272FE91E1FD19F0071C72D /* MyPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPhoto.swift; sourceTree = "<group>"; };
 		F5344E451CCE5B0900D642B6 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F55153BA1D578B8E00C1C49C /* neko.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = neko.png; sourceTree = "<group>"; };
 		F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				F525F64C1CCFADBA00B4B9B9 /* Util.swift */,
 				F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */,
 				F5BD3EA11CCCFED800B446CE /* Info.plist */,
+				F5272FE91E1FD19F0071C72D /* MyPhoto.swift */,
 			);
 			path = DriveLog_swift;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				F5BD3E981CCCFED800B446CE /* ViewController.swift in Sources */,
 				F5FEAF5B1E1CD6A60039FD92 /* PreviewViewController.swift in Sources */,
 				F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */,
+				F5272FEA1E1FD19F0071C72D /* MyPhoto.swift in Sources */,
 				F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */,
 				F59902341CD5ED8200D968B0 /* Photo.xcdatamodeld in Sources */,
 				F598C8331CDA3AAB00F6C7FE /* MyAnnotation.swift in Sources */,

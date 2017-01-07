@@ -53,7 +53,7 @@ class Util
         case 3:
             return 1000
         case 4:
-            return 0
+            return 1
         default:
             return 50
         }
