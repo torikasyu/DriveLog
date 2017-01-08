@@ -25,7 +25,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     var myPhoto_global:MyPhoto?     //プレビュー表示時に一時保存する場所
     var isPreviewMode = false       //プレビュー未確定フラグ
-    var isAutoConfirm = false       //プレビューを自動確定させるか
+    var isManualCapture = false       //マニュアル撮影かどうか
     
     // For AVCapture
     var input:AVCaptureDeviceInput?
@@ -75,6 +75,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             
             let button = sender as! UIButton
             button.setTitle("Stop Capture", for: UIControlState())
+
+            //開始位置を原点とする
+            lastPostLocation = lastLocation
         }
         else
         {
@@ -128,7 +131,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         mp.date = Date()
 
         self.myPhoto_global = mp    //一時保存
-        self.isAutoConfirm = false
+        self.isManualCapture = true
         
         self.capturedImage = UIImage.init(data: image) //for preview
         self.performSegue(withIdentifier: "previewSegue", sender: nil)
@@ -153,20 +156,23 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         mp.date = Date()
 
         self.myPhoto_global = mp    //一時保存
-        self.isAutoConfirm = true
+        self.isManualCapture = false
         
         self.capturedImage = UIImage.init(data: image) //for preview
         self.performSegue(withIdentifier: "previewSegue", sender: nil)
         
         // Postした位置を記録して次回の距離差分判定に使用する
-        lastPostLocation = lastLocation
+        // lastPostLocation = lastLocation
     }
 
     // 撮影を確定する（プレビュー表示後）
     func comfirmCapture(mp:MyPhoto)
     {
         self.saveToCoreData(mp:mp)
-        
+
+        // Postした位置を記録して次回の距離差分判定に使用する
+        lastPostLocation = lastLocation
+
         if(self.isRelationToTwitter)
         {
             self.postTweet((mp.image)!)
@@ -425,7 +431,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             {
                 let previewCon = segue.destination as! PreviewViewController
                 previewCon.mp = myPhoto_global
-                previewCon.isAutoConfirm = self.isAutoConfirm
+                
+                //previewCon.isAutoConfirm = self.isAutoConfirm
             }
         }
     }
@@ -532,6 +539,16 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     }
 
     // MARK: - 子画面から戻ってきた時に呼ばれる
+    @IBAction func unwindActionFromPreview(_ segue: UIStoryboardSegue) {
+        print("unwindActionFromPreview!")
+        
+        let previewCon = segue.source as! PreviewViewController
+        self.comfirmCapture(mp: previewCon.mp!)
+        
+        self.isPreviewMode = false
+    }
+    
+    
     @IBAction func unwindAction(_ segue: UIStoryboardSegue) {
         // とりあえず空
         print(segue.identifier!)
@@ -543,7 +560,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             if let t:Int = ud.integer(forKey: "TweetRange") as Int?
             {
                 range = Util.DistRangeIdxToMeter(t)
-                labelLog.text = String("\(range)m")
+                //labelLog.text = String("\(range)m")
             }
             
             if let t:Bool = ud.bool(forKey: "RelationTwitter") as Bool?
@@ -562,18 +579,27 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         }
         else if segue.identifier == "UnwindPreview"
         {
-            print("unwind save")
+            print("not use unwind save -> see unwindActionFromPreview")
             
+            /*
             let previewCon = segue.source as! PreviewViewController
             self.comfirmCapture(mp: previewCon.mp!)
 
             self.isPreviewMode = false
+            */
         }
         else if segue.identifier == "UnwindPreviewCancel"
         {
             print("UnwindPreviewCancel")
             
+            //プレビュー終了
             self.isPreviewMode = false
+            
+            //自動撮影時は、キャンセル時でも撮影距離をリセットする
+            if(self.isManualCapture == false)
+            {
+                lastPostLocation = lastLocation
+            }
         }
         
     }
@@ -728,16 +754,20 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 let cur = CLLocation(latitude: self.lastLocation!.latitude,longitude:self.lastLocation!.longitude)
                 let twd = CLLocation(latitude: self.lastPostLocation!.latitude,longitude:self.lastPostLocation!.longitude)
                 
-                let dist = cur.distance(from: twd)
+                let dist = cur.distance(from: twd)  // 前回撮影（またはプレビューキャンセル）した場所からどのくらい離れたか
                 print("Diff:\(dist)")
                 
-                if(dist > Double(range!))
+                let remainDistance = Double(range!) - dist
+                self.labelLog.text = "あと\(String(format:"%.1f",remainDistance))mで撮影します"
+                
+                if(remainDistance <= 0)
                 {
                     isPost = true
                 }
             }
             else
             {
+                // ここに来るかは要検討
                 isPost = true
             }
             
