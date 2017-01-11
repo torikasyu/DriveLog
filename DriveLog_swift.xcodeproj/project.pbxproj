@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F50ACA7F1E260FDE006C12D7 /* icon_512.png in Resources */ = {isa = PBXBuildFile; fileRef = F50ACA7E1E260FDE006C12D7 /* icon_512.png */; };
 		F525F64D1CCFADBA00B4B9B9 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F525F64C1CCFADBA00B4B9B9 /* Util.swift */; };
 		F5272FEA1E1FD19F0071C72D /* MyPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5272FE91E1FD19F0071C72D /* MyPhoto.swift */; };
 		F5344E461CCE5B0900D642B6 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5344E451CCE5B0900D642B6 /* Social.framework */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F50ACA7E1E260FDE006C12D7 /* icon_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512.png; sourceTree = "<group>"; };
 		F525F64C1CCFADBA00B4B9B9 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		F5272FE91E1FD19F0071C72D /* MyPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPhoto.swift; sourceTree = "<group>"; };
 		F5344E451CCE5B0900D642B6 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -93,6 +95,7 @@
 		F5BD3E941CCCFED800B446CE /* DriveLog_swift */ = {
 			isa = PBXGroup;
 			children = (
+				F50ACA7E1E260FDE006C12D7 /* icon_512.png */,
 				F5BD3E9C1CCCFED800B446CE /* Assets.xcassets */,
 				F5BD3E991CCCFED800B446CE /* Main.storyboard */,
 				F5BD3E9E1CCCFED800B446CE /* LaunchScreen.storyboard */,
@@ -144,6 +147,7 @@
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = KP88P7787K;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -171,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F55153BB1D578B8E00C1C49C /* neko.png in Resources */,
+				F50ACA7F1E260FDE006C12D7 /* icon_512.png in Resources */,
 				F5BD3EA01CCCFED800B446CE /* LaunchScreen.storyboard in Resources */,
 				F5BD3E9D1CCCFED800B446CE /* Assets.xcassets in Resources */,
 				F5BD3E9B1CCCFED800B446CE /* Main.storyboard in Resources */,
@@ -314,9 +319,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = KP88P7787K;
 				INFOPLIST_FILE = DriveLog_swift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "jp.torikasyu.DriveLog-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.torikasyu.drivingphoto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "06e5d6c4-ebc1-4283-bad9-f3530d689580";
+				PROVISIONING_PROFILE_SPECIFIER = dev_wildcard_161212;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -325,10 +333,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = KP88P7787K;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = DriveLog_swift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "jp.torikasyu.DriveLog-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.torikasyu.drivingphoto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

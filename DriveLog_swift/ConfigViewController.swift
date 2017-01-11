@@ -20,7 +20,7 @@ class ConfigViewController: UIViewController {
     @IBOutlet weak var switchRelationTwitter: UISwitch!
     
     @IBOutlet weak var labelTwitterID: UILabel!
-    @IBOutlet weak var labelAccountID: UILabel!
+    //@IBOutlet weak var labelAccountID: UILabel!
     
     @IBAction func btnDistRangeSegCon(_ sender: UISegmentedControl) {
 
@@ -44,12 +44,18 @@ class ConfigViewController: UIViewController {
         ud.set(nil, forKey: "TwitterAcName")
         ud.set(nil, forKey: "TwitterAcId")
         
-        self.labelTwitterID.text = "連動なし"
-        self.labelAccountID.text = "";
+        self.labelTwitterID.text = "No Twitter Account"
+        //self.labelAccountID.text = "";
+        self.switchRelationTwitter.isOn = false
+    }
+    
+    @IBAction func btnBack(_ sender: Any) {
+        //_ = self.navigationController?.popViewController(animated: true)
+        //unwind action
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        //self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func viewDidLoad() {
@@ -71,12 +77,13 @@ class ConfigViewController: UIViewController {
         }
         else
         {
-            labelTwitterID.text = "連動なし"
+            labelTwitterID.text = "No Twitter Account"
         }
         
         if let t:String = ud.string(forKey: "TwitterAcId")
         {
-            labelAccountID.text = t
+            //labelAccountID.text = t
+            print(t)
         }
     }
     
@@ -103,13 +110,15 @@ class ConfigViewController: UIViewController {
                     print("error! \(error)")
                     //return
                     isError = true
-                    errMsg = "本体の「設定」でTwitterアカウントを設定してください"
+                    //errMsg = "本体の「設定」でTwitterアカウントを設定してください"
+                    errMsg = "Configure Twitter with iPhone Config."
                 }
                 else if !success {
                     print("error! Twitterアカウントの利用が許可されていません")
                     //return
                     isError = true
-                    errMsg = "本体の「設定」でTwitterアカウントの利用を許可してください"
+                    //errMsg = "本体の「設定」でTwitterアカウントの利用を許可してください"
+                    errMsg = "Allow Using Twitter Acctoun with iPhone Config."
                 }
                 else
                 {
@@ -143,7 +152,7 @@ class ConfigViewController: UIViewController {
                         ud.set(accounts[0].identifier, forKey: "TwitterAcId")
                         
                         self.labelTwitterID.text = accounts[0].username
-                        self.labelAccountID.text = accounts[0].identifier as String?
+                        //self.labelAccountID.text = accounts[0].identifier as String?
                     }
                     
                 }
@@ -152,7 +161,8 @@ class ConfigViewController: UIViewController {
         else
         {
             isError = true
-            errMsg = "「設定」でTwitterアカウントを設定してください"
+            //errMsg = "「設定」でTwitterアカウントを設定してください"
+            errMsg = "Configure Twitter with iPhone Config."
         }
         
         if(isError)
@@ -169,8 +179,9 @@ class ConfigViewController: UIViewController {
     fileprivate func showAccountSelectSheet(_ accounts: [ACAccount]) {
         
         let alert = UIAlertController(title: "Twitter",
-                                      message: "アカウントを選択してください",
-                                      preferredStyle: .actionSheet)
+                                      //message: "アカウントを選択してください",
+                                    message: "Select Account",
+                                    preferredStyle: .actionSheet)
         
         // アカウント選択のActionSheetを表示するボタン
         for account in accounts {
@@ -186,7 +197,7 @@ class ConfigViewController: UIViewController {
                     ud.set(account.identifier, forKey:"TwitterAcId")
                     
                     self.labelTwitterID.text = account.username
-                    self.labelAccountID.text = account.identifier as String?
+                    //self.labelAccountID.text = account.identifier as String?
             }))
         }
         

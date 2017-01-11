@@ -44,7 +44,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     // Twitter Param
     var lastPostLocation:CLLocationCoordinate2D?
-    var range:Int?
+    var range:Int = 1000
     var isRelationToTwitter = false
 
     // CoreData
@@ -59,7 +59,28 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     @IBOutlet weak var btnAutoCapture: UIButton!
     
     // MARK: - Actions
+    @IBAction func btnCurrentLoactionAction(_ sender: Any) {
+        let centerCordinate: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
+        
+        // 現在地表示
+        let rect: MKCoordinateSpan = MKCoordinateSpanMake(0.05,0.05)
+        let region: MKCoordinateRegion = MKCoordinateRegionMake(centerCordinate, rect)
+        
+        mapView.setRegion(region, animated: true)
+        mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+
+    }
+    
     @IBAction func btnConfig(_ sender: AnyObject) {
+
+        //Configに遷移する時にAutoモードをOFFにする
+        self.isAutoCaptureMode = false
+        self.labelLog.text = "■ Auto Shot : Stopped"
+        
+        //self.btnAutoCapture.setTitle("● Start Capture", for: UIControlState())
+        self.btnAutoCapture.setImage(#imageLiteral(resourceName: "start_shoot"), for: UIControlState())
+        self.btnAutoCapture.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+        
         performSegue(withIdentifier: "configSegue", sender: sender)
     }
     
@@ -72,19 +93,26 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         if(self.isAutoCaptureMode == false)
         {
             self.isAutoCaptureMode = true
+            self.labelLog.text = "● Auto Shot : Started"
             
             let button = sender as! UIButton
-            button.setTitle("Stop Capture", for: UIControlState())
-
+            //button.setTitle("■ Stop Capture", for: UIControlState())
+            button.setImage(#imageLiteral(resourceName: "stop_shoot"), for: UIControlState())
+            button.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+            
             //開始位置を原点とする
             lastPostLocation = lastLocation
         }
         else
         {
             self.isAutoCaptureMode = false
+            self.labelLog.text = "■ Auto Shot : Stopped"
             
             let button = sender as! UIButton
-            button.setTitle("Start Capture", for: UIControlState())
+            //button.setTitle("● Start Capture", for: UIControlState())
+            button.setImage(#imageLiteral(resourceName: "start_shoot"), for: UIControlState())
+            button.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+
         }
     }
 
@@ -185,7 +213,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     func setPin(mp:MyPhoto)
     {
         let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        format.dateFormat = "yyyy-MM-dd HH:mm"
         
         let pin = MyAnnotation(location: CLLocationCoordinate2DMake(mp.latitude as! CLLocationDegrees, mp.longiture as! CLLocationDegrees))
         pin.identity = mp.photoid
@@ -241,12 +269,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         locationManager.delegate = self
 
         // 測位の精度を 100ｍ とする
-        //locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        //locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         
         // 位置情報取得間隔の指定
         //locationManager.distanceFilter = 50.0
-        locationManager.distanceFilter = 1.0
+        locationManager.distanceFilter = 100.0
         
         // 用途の指定
         locationManager.activityType = CLActivityType.automotiveNavigation
@@ -283,17 +311,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         // Dispose of any resources that can be recreated.
     }
         
-    // MARK: 画像をキャプチャーしてTwitterに投稿し、Pinを立てる
+    // MARK: 画像をキャプチャーしてTwitterに投稿する
     fileprivate func postTweet(_ imageData:Data) {
         // ツイートしたい文章をセット
-        var status = "\(range)m間隔でTweet中 "
-        if(address == nil)
+        //var status = "\(range)m間隔でTweet中 "
+        var status = ""
+        if let t = address
         {
-            status += "現在位置測定中"
-        }
-        else
-        {
-            status += address!
+            status = t + " #DrivePhoto"
         }
         
         Util.doTweet(status,imageData: imageData, location: lastLocation)
@@ -329,7 +354,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             let date:Date = photo.date! as Date
             
             let format = DateFormatter()
-            format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            format.dateFormat = "yyyy-MM-dd HH:mm"
             
             // ピンを作成する（identityを追加したカスタムクラスを使用する）
             let pin:MyAnnotation = MyAnnotation(location: CLLocationCoordinate2D(latitude: lat, longitude: lon))
@@ -431,8 +456,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             {
                 let previewCon = segue.destination as! PreviewViewController
                 previewCon.mp = myPhoto_global
-                
-                //previewCon.isAutoConfirm = self.isAutoConfirm
+                previewCon.isManualCapture = self.isManualCapture
             }
         }
     }
@@ -509,24 +533,25 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                                             if placemarks == nil
                                             {
                                                 self.address = ""
-                                                self.labelAddress.text = "現在位置取得中"
+                                                self.labelAddress.text = "fetching address.."
                                             }
                                             else
                                             {
                                                 for placemark in placemarks! {
+                                                    
                                                     /*
                                                      print("Name: \(placemark.name)")
                                                      print("Country: \(placemark.country)")
-                                                     print("ISOcountryCode: \(placemark.ISOcountryCode)")
+                                                     print("thoroughfare: \(placemark.thoroughfare)")
                                                      print("administrativeArea: \(placemark.administrativeArea)")
                                                      print("subAdministrativeArea: \(placemark.subAdministrativeArea)")
                                                      print("Locality: \(placemark.locality)")
                                                      print("PostalCode: \(placemark.postalCode)")
                                                      print("areaOfInterest: \(placemark.areasOfInterest)")
                                                      print("Ocean: \(placemark.ocean)")
-                                                     */
+                                                    */
                                                     
-                                                    var ads:String = "@";
+                                                    var ads:String = "";
                                                     if let t = placemark.administrativeArea{ads = ads + t + " "}
                                                     if let t = placemark.locality{ads = ads + t + " "}
                                                     if let t = placemark.thoroughfare{ads = ads + t}
@@ -560,6 +585,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             if let t:Int = ud.integer(forKey: "TweetRange") as Int?
             {
                 range = Util.DistRangeIdxToMeter(t)
+                print("%d",range)
                 //labelLog.text = String("\(range)m")
             }
             
@@ -757,8 +783,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 let dist = cur.distance(from: twd)  // 前回撮影（またはプレビューキャンセル）した場所からどのくらい離れたか
                 print("Diff:\(dist)")
                 
-                let remainDistance = Double(range!) - dist
-                self.labelLog.text = "あと\(String(format:"%.1f",remainDistance))mで撮影します"
+                let remainDistance = Double(range) - dist
+                self.labelLog.text = "● Auto Shot : last \(String(format:"%.1f",remainDistance))m"
                 
                 if(remainDistance <= 0)
                 {

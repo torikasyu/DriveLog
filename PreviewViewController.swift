@@ -14,13 +14,14 @@ class PreviewViewController: UIViewController {
     //var tweetText:String = ""
 
     var mp:MyPhoto?
-    var isAutoConfirm = false
-    var timer:Timer!
-    var remainSecond = 5.0
+    var isManualCapture = false
+    var timer:Timer? = nil
+    var remainSecond = 10.0
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var textboxTweet: UITextField!
     @IBOutlet weak var labelRemainTime: UILabel!
+    @IBOutlet weak var labelPreview: UILabel!
     
     @IBAction func btnSave_tapped(_ sender: Any) {
         //unwind action
@@ -40,13 +41,16 @@ class PreviewViewController: UIViewController {
             self.imageView.image = UIImage(data: t)
         }
         self.textboxTweet.text = mp?.address
-        if(isAutoConfirm)
+        if(isManualCapture)
         {
-            self.textboxTweet.text = self.textboxTweet.text! + "[Auto Mode]"
+            self.labelPreview.text = "Manual Shoot Preview"
+            self.labelRemainTime.text = "Save or Cancel ?"
         }
-        
-        self.labelRemainTime.text = "あと\(String(format:"%g",remainSecond))秒で確定します"
-        
+        else
+        {
+            self.labelPreview.text = "Auto Shoot Preview"
+            self.labelRemainTime.text = "Will be saved after \(String(format:"%g",remainSecond)) sec"
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -57,15 +61,21 @@ class PreviewViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         //self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-        timer.fire()
+
+        if(isManualCapture == false)
+        {
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+            //timer.fire()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         //self.navigationController?.setNavigationBarHidden(true, animated: false)
 
-        timer.invalidate()
+        if (timer != nil)
+        {
+            timer?.invalidate()
+        }
     }
     
     func update()
@@ -73,7 +83,7 @@ class PreviewViewController: UIViewController {
         remainSecond = remainSecond - 1.0
         print(remainSecond)
         
-        self.labelRemainTime.text = "あと\(String(format:"%g",remainSecond))で確定します"
+        self.labelRemainTime.text = "Auto Save after \(String(format:"%g",remainSecond)) sec"
 
         if(remainSecond < 0)
         {
