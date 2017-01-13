@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Drivin&apos;Photo</string>
+	<string>DriveTweet</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -29,7 +29,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Always Use Description !!!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To detect taken photo&apos;s location.</string>
+	<string>To detect taken photo's location.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To save photos to Photo Library.</string>
 	<key>UILaunchStoryboardName</key>

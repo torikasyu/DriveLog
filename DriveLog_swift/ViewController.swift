@@ -93,7 +93,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         if(self.isAutoCaptureMode == false)
         {
             self.isAutoCaptureMode = true
-            self.labelLog.text = "● Auto Shot : Started"
+            self.labelLog.text = "● Auto Shoot : detecting distance.."
+            
+            UIApplication.shared.isIdleTimerDisabled = true
             
             let button = sender as! UIButton
             //button.setTitle("■ Stop Capture", for: UIControlState())
@@ -106,7 +108,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         else
         {
             self.isAutoCaptureMode = false
-            self.labelLog.text = "■ Auto Shot : Stopped"
+            self.labelLog.text = "■ Auto Shoot : Stopped"
+
+            UIApplication.shared.isIdleTimerDisabled = false
             
             let button = sender as! UIButton
             //button.setTitle("● Start Capture", for: UIControlState())
@@ -144,6 +148,24 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     func doManualCapture()
     {
         print("doManualCapture")
+        
+        if(lastLocation?.latitude == 0.0 && lastLocation?.longitude == 0.0)
+        {
+            let alert:UIAlertController = UIAlertController(title:"Location Error",
+                                                            message: "Please wait for initialize location.",
+                                                            preferredStyle: UIAlertControllerStyle.alert)
+            
+            let cancelAction  = UIAlertAction(title: "OK",
+                                                           style: UIAlertActionStyle.cancel,
+                                                           handler:{
+                                                            (action:UIAlertAction!) -> Void in
+                                                            print("OK")
+            })
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
 
         if(self.isPreviewMode == true){return}  //プレビュー中は新たな画像を撮影しない
         self.isPreviewMode = true
@@ -152,13 +174,16 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         let mp = MyPhoto()
         if let t = self.address { mp.address = t}
-        mp.latitude = lastLocation!.latitude as NSNumber?
-        mp.longiture = lastLocation!.longitude as NSNumber?
+        
+        if let t = self.lastLocation {
+            mp.latitude = t.latitude as NSNumber?
+            mp.longiture = t.longitude as NSNumber?
+        }
         mp.image = image
         mp.photoid = UUID().uuidString
         mp.date = Date()
 
-        self.myPhoto_global = mp    //一時保存
+        self.myPhoto_global = mp    //グローバルに一時保存
         self.isManualCapture = true
         
         self.capturedImage = UIImage.init(data: image) //for preview
@@ -177,24 +202,24 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         let mp = MyPhoto()
         if let t = self.address { mp.address = t}
-        mp.latitude = lastLocation!.latitude as NSNumber?
-        mp.longiture = lastLocation!.longitude as NSNumber?
+        
+        if let t = self.lastLocation {
+            mp.latitude = t.latitude as NSNumber?
+            mp.longiture = t.longitude as NSNumber?
+        }
         mp.image = image
         mp.photoid = UUID().uuidString
         mp.date = Date()
 
-        self.myPhoto_global = mp    //一時保存
+        self.myPhoto_global = mp    //グローバルに一時保存
         self.isManualCapture = false
         
         self.capturedImage = UIImage.init(data: image) //for preview
         self.performSegue(withIdentifier: "previewSegue", sender: nil)
-        
-        // Postした位置を記録して次回の距離差分判定に使用する
-        // lastPostLocation = lastLocation
     }
 
     // 撮影を確定する（プレビュー表示後）
-    func comfirmCapture(mp:MyPhoto)
+    func confirmCapture(mp:MyPhoto)
     {
         self.saveToCoreData(mp:mp)
 
@@ -209,7 +234,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         self.setPin(mp: mp)
     }
 
-    // Pinを立てる
+    // MARK:Pinを立てる
     func setPin(mp:MyPhoto)
     {
         let format = DateFormatter()
@@ -223,7 +248,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         mapView.addAnnotation(pin)
     }
     
-    // CoreDataにセーブする
+    // MARK:CoreDataにセーブする
     func saveToCoreData(mp:MyPhoto)
     {
         // Save Data to CoreData
@@ -241,6 +266,19 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
         }
+    }
+    
+    // MARK: Twitterに投稿する
+    fileprivate func postTweet(_ imageData:Data) {
+        // ツイートしたい文章をセット
+        //var status = "\(range)m間隔でTweet中 "
+        var status = ""
+        if let t = address
+        {
+            status = t + " #DrivingCamera"
+        }
+        
+        Util.doTweet(status,imageData: imageData, location: lastLocation)
     }
     
     // MARK: - ViewController Methods
@@ -269,12 +307,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         locationManager.delegate = self
 
         // 測位の精度を 100ｍ とする
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        //locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        //locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         
         // 位置情報取得間隔の指定
-        //locationManager.distanceFilter = 50.0
-        locationManager.distanceFilter = 100.0
+        locationManager.distanceFilter = 50.0
+        //locationManager.distanceFilter = 100.0
         
         // 用途の指定
         locationManager.activityType = CLActivityType.automotiveNavigation
@@ -304,26 +342,16 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     // メモリ管理のため
     override func viewDidDisappear(_ animated: Bool) {
+ 
+        UIApplication.shared.isIdleTimerDisabled = false
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-        
-    // MARK: 画像をキャプチャーしてTwitterに投稿する
-    fileprivate func postTweet(_ imageData:Data) {
-        // ツイートしたい文章をセット
-        //var status = "\(range)m間隔でTweet中 "
-        var status = ""
-        if let t = address
-        {
-            status = t + " #DrivePhoto"
-        }
-        
-        Util.doTweet(status,imageData: imageData, location: lastLocation)
-    }
-
+    
     //MARK: - CoreData関連Methods
     //MARK: CoreDataからデータ読み込み（全データ）してPinを立てる
 //    func fetchCoreData() {
@@ -459,14 +487,18 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 previewCon.isManualCapture = self.isManualCapture
             }
         }
+        else
+        {
+            print("no segue identifier")
+        }
     }
     
     // MARK: - カメラとストリーミングのセットアップ
     func configureCamera()
     {
         session = AVCaptureSession()
-        session.sessionPreset = AVCaptureSessionPresetMedium
-        //session.sessionPreset = AVCaptureSessionPresetHigh
+        //session.sessionPreset = AVCaptureSessionPresetMedium
+        session.sessionPreset = AVCaptureSessionPresetHigh
 
         output = AVCaptureVideoDataOutput()
         //output = AVCaptureStillImageOutput()
@@ -524,6 +556,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     // MARK: - 緯度経度から住所を求める
     func reverseGeoCode(_ location2D:CLLocationCoordinate2D)
     {
+        if(location2D.latitude == 0.0 && location2D.longitude == 0.0)
+        {
+            self.labelAddress.text = "initializing location.."
+            return
+        }
+        
         let geocoder = CLGeocoder()
         let location = CLLocation(latitude: location2D.latitude, longitude: location2D.longitude)
         
@@ -568,7 +606,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         print("unwindActionFromPreview!")
         
         let previewCon = segue.source as! PreviewViewController
-        self.comfirmCapture(mp: previewCon.mp!)
+        self.confirmCapture(mp: previewCon.mp!)
         
         self.isPreviewMode = false
     }
@@ -609,7 +647,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             
             /*
             let previewCon = segue.source as! PreviewViewController
-            self.comfirmCapture(mp: previewCon.mp!)
+            self.confirmCapture(mp: previewCon.mp!)
 
             self.isPreviewMode = false
             */
@@ -754,7 +792,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         
         self.mapView.showsUserLocation = true
         
-        lastLocation = self.mapView.userLocation.coordinate
+        //lastLocation = self.mapView.userLocation.coordinate
+        lastLocation = manager.location?.coordinate
+        
         reverseGeoCode(lastLocation!)
         
         if(initMap == false)
@@ -784,7 +824,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
                 print("Diff:\(dist)")
                 
                 let remainDistance = Double(range) - dist
-                self.labelLog.text = "● Auto Shot : last \(String(format:"%.1f",remainDistance))m"
+                self.labelLog.text = "● Auto Shooting : last \(String(format:"%.1f",remainDistance))m"
                 
                 if(remainDistance <= 0)
                 {

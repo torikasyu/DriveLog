@@ -45,11 +45,11 @@ class Util
     {
         switch idx {
         case 0:
-            return 250
-        case 1:
             return 500
-        case 2:
+        case 1:
             return 1000
+        case 2:
+            return 3000
         case 3:
             return 5000
         case 4:

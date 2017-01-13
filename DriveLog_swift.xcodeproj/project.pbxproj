@@ -12,6 +12,7 @@
 		F5272FEA1E1FD19F0071C72D /* MyPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5272FE91E1FD19F0071C72D /* MyPhoto.swift */; };
 		F5344E461CCE5B0900D642B6 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5344E451CCE5B0900D642B6 /* Social.framework */; };
 		F55153BB1D578B8E00C1C49C /* neko.png in Resources */ = {isa = PBXBuildFile; fileRef = F55153BA1D578B8E00C1C49C /* neko.png */; };
+		F57181B21E2666880043AB40 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57181B11E2666880043AB40 /* CustomButton.swift */; };
 		F586FFDD1CDB31E50049FA89 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */; };
 		F586FFDE1CDB31E50049FA89 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F586FFDC1CDB31E50049FA89 /* Photo.swift */; };
 		F5909C131CDEE98B00468690 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */; };
@@ -33,6 +34,7 @@
 		F5272FE91E1FD19F0071C72D /* MyPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPhoto.swift; sourceTree = "<group>"; };
 		F5344E451CCE5B0900D642B6 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F55153BA1D578B8E00C1C49C /* neko.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = neko.png; sourceTree = "<group>"; };
+		F57181B11E2666880043AB40 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		F586FFDB1CDB31E50049FA89 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F586FFDC1CDB31E50049FA89 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		F5909C121CDEE98B00468690 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				F598C8321CDA3AAB00F6C7FE /* MyAnnotation.swift */,
 				F5BD3EA11CCCFED800B446CE /* Info.plist */,
 				F5272FE91E1FD19F0071C72D /* MyPhoto.swift */,
+				F57181B11E2666880043AB40 /* CustomButton.swift */,
 			);
 			path = DriveLog_swift;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				F5272FEA1E1FD19F0071C72D /* MyPhoto.swift in Sources */,
 				F59902041CD4372D00D968B0 /* ConfigViewController.swift in Sources */,
 				F59902341CD5ED8200D968B0 /* Photo.xcdatamodeld in Sources */,
+				F57181B21E2666880043AB40 /* CustomButton.swift in Sources */,
 				F598C8331CDA3AAB00F6C7FE /* MyAnnotation.swift in Sources */,
 				F5BD3E961CCCFED800B446CE /* AppDelegate.swift in Sources */,
 				F5909C131CDEE98B00468690 /* PhotoDetailViewController.swift in Sources */,
@@ -321,7 +325,7 @@
 				INFOPLIST_FILE = DriveLog_swift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = jp.torikasyu.drivingphoto;
+				PRODUCT_BUNDLE_IDENTIFIER = com.torikasyu.drivingcamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "06e5d6c4-ebc1-4283-bad9-f3530d689580";
 				PROVISIONING_PROFILE_SPECIFIER = dev_wildcard_161212;
@@ -333,12 +337,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = KP88P7787K;
 				INFOPLIST_FILE = DriveLog_swift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = jp.torikasyu.drivingphoto;
+				PRODUCT_BUNDLE_IDENTIFIER = com.torikasyu.drivingcamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "947069d6-eca3-4ee6-ab8f-8f71992b3a5b";
+				PROVISIONING_PROFILE_SPECIFIER = 170112_drivecamera_dist;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

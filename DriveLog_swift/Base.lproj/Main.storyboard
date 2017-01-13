@@ -38,19 +38,26 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmT-pi-tAU">
-                                <rect key="frame" x="170.5" y="481" width="34" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmT-pi-tAU" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
+                                <rect key="frame" x="66" y="481" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Wns-He-g8M"/>
+                                    <constraint firstAttribute="width" constant="100" id="mPO-BM-ur5"/>
+                                </constraints>
                                 <state key="normal" title="Save"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnSave_tapped:" destination="lKg-N3-EYr" eventType="touchUpInside" id="KKx-eL-d5M"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTH-Q8-Oga">
-                                <rect key="frame" x="163" y="521" width="48" height="30"/>
-                                <state key="normal" title="Cancel"/>
-                                <connections>
-                                    <action selector="btnCancel_tapped:" destination="lKg-N3-EYr" eventType="touchUpInside" id="Di4-u0-baR"/>
-                                    <segue destination="FUj-Ot-DoZ" kind="unwind" identifier="UnwindPreviewCancel" unwindAction="unwindAction:" id="pLc-b7-5tF"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WS2-na-K5v">
@@ -65,6 +72,29 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTH-Q8-Oga" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
+                                <rect key="frame" x="209" y="481" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ag9-jB-uDh"/>
+                                    <constraint firstAttribute="width" constant="100" id="vhS-Rf-KMe"/>
+                                </constraints>
+                                <state key="normal" title="Cancel"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="btnCancel_tapped:" destination="lKg-N3-EYr" eventType="touchUpInside" id="Di4-u0-baR"/>
+                                    <segue destination="FUj-Ot-DoZ" kind="unwind" identifier="UnwindPreviewCancel" unwindAction="unwindAction:" id="pLc-b7-5tF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -73,14 +103,14 @@
                             <constraint firstItem="8fd-1P-3o7" firstAttribute="top" secondItem="WAJ-Au-rWf" secondAttribute="bottom" constant="10" id="Na9-fw-V7z"/>
                             <constraint firstItem="8fd-1P-3o7" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="Njs-Ns-xc6"/>
                             <constraint firstItem="WAJ-Au-rWf" firstAttribute="top" secondItem="WS2-na-K5v" secondAttribute="bottom" constant="10" id="PHt-SC-7ma"/>
+                            <constraint firstItem="MTH-Q8-Oga" firstAttribute="centerY" secondItem="jmT-pi-tAU" secondAttribute="centerY" id="U2d-q2-fqw"/>
+                            <constraint firstItem="jmT-pi-tAU" firstAttribute="leading" secondItem="QLu-E7-jS3" secondAttribute="leadingMargin" constant="50" id="aia-h4-Eul"/>
                             <constraint firstItem="WAJ-Au-rWf" firstAttribute="width" secondItem="WS2-na-K5v" secondAttribute="width" id="b7B-Lc-TOf"/>
                             <constraint firstItem="jmT-pi-tAU" firstAttribute="top" secondItem="8fd-1P-3o7" secondAttribute="bottom" constant="10" id="cBF-Gx-EJw"/>
                             <constraint firstItem="HP9-GL-td5" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="jHj-td-WCB"/>
                             <constraint firstItem="WS2-na-K5v" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="m0a-VV-20B"/>
-                            <constraint firstItem="MTH-Q8-Oga" firstAttribute="top" secondItem="jmT-pi-tAU" secondAttribute="bottom" constant="10" id="o1r-zi-jfW"/>
-                            <constraint firstItem="jmT-pi-tAU" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="qY8-fD-1SN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="MTH-Q8-Oga" secondAttribute="trailing" constant="50" id="mSk-xm-ase"/>
                             <constraint firstItem="HP9-GL-td5" firstAttribute="top" secondItem="Hhj-QT-RFq" secondAttribute="bottom" constant="5" id="vVn-my-ezV"/>
-                            <constraint firstItem="MTH-Q8-Oga" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="wIL-HT-DSX"/>
                             <constraint firstItem="WS2-na-K5v" firstAttribute="width" secondItem="QLu-E7-jS3" secondAttribute="width" multiplier="0.8" id="zo9-RO-HxV"/>
                         </constraints>
                     </view>
@@ -132,18 +162,29 @@
                                     <constraint firstAttribute="width" secondItem="vAY-ql-yw8" secondAttribute="height" multiplier="1:1" id="L2f-vd-Hcv"/>
                                 </constraints>
                             </imageView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0le-3Q-kUs">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0le-3Q-kUs">
                                 <rect key="frame" x="0.0" y="439" width="375" height="184"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHH-gp-oRA">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHH-gp-oRA" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
                                 <rect key="frame" x="204.5" y="379" width="144.5" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="start_shoot"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnAutoCapture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PL0-Eu-NvN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVV-ZN-o33">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVV-ZN-o33" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
                                 <rect key="frame" x="26" y="379" width="144.5" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -151,6 +192,17 @@
                                     <constraint firstAttribute="height" constant="40" id="NhH-88-VcB"/>
                                 </constraints>
                                 <state key="normal" image="manual_shoot"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnCapture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="edj-HM-apB"/>
                                 </connections>
@@ -162,8 +214,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Address]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XpC-NE-XUS">
-                                <rect key="frame" x="26" y="118" width="75" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="fetching address.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XpC-NE-XUS">
+                                <rect key="frame" x="26" y="118" width="138" height="21"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -176,10 +228,21 @@
                                     <action selector="btnCurrentLoactionAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m7x-9x-v2h"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCc-el-YDj">
+                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCc-el-YDj" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
                                 <rect key="frame" x="322" y="336" width="27" height="28"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="config"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnConfig:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8DU-0G-OzJ"/>
                                 </connections>
@@ -247,9 +310,24 @@
                                     <constraint firstAttribute="width" secondItem="FvD-n3-OgL" secondAttribute="height" multiplier="1:1" id="E8s-gJ-Gt1"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BSp-ae-WBo">
-                                <rect key="frame" x="118" y="476" width="138" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BSp-ae-WBo" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
+                                <rect key="frame" x="112" y="486" width="150" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="1vk-5J-8yG"/>
+                                    <constraint firstAttribute="height" constant="30" id="C2q-9G-E4p"/>
+                                </constraints>
                                 <state key="normal" title="Save to Camera Roll"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnSaveCameraRoll:" destination="j1R-kw-Dqe" eventType="touchUpInside" id="6Nw-I2-iP8"/>
                                 </connections>
@@ -266,17 +344,49 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-Wt-WSN">
-                                <rect key="frame" x="165" y="526" width="45" height="30"/>
-                                <state key="normal" title="Delete"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-Wt-WSN" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
+                                <rect key="frame" x="112.5" y="536" width="150" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="0Mk-eB-yqo"/>
+                                    <constraint firstAttribute="width" constant="150" id="J2M-UR-9Th"/>
+                                </constraints>
+                                <state key="normal" title="Delete">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnDelete:" destination="j1R-kw-Dqe" eventType="touchUpInside" id="ZEQ-Mx-Eye"/>
                                     <segue destination="cGy-nO-MA7" kind="unwind" identifier="UnwindPhotoDetail" unwindAction="unwindAction:" id="UNa-dS-xxt"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qgo-ob-sbC">
-                                <rect key="frame" x="170.5" y="436" width="34" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qgo-ob-sbC" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
+                                <rect key="frame" x="112.5" y="436" width="150" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="7WL-6a-Mmb"/>
+                                    <constraint firstAttribute="width" constant="150" id="PWQ-o1-dHb"/>
+                                </constraints>
                                 <state key="normal" title="Back"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnBack:" destination="j1R-kw-Dqe" eventType="touchUpInside" id="446-gw-jA0"/>
                                 </connections>
@@ -291,7 +401,7 @@
                             <constraint firstItem="Qgo-ob-sbC" firstAttribute="top" secondItem="s8q-Yp-BR2" secondAttribute="bottom" constant="10" id="JdQ-iR-ctE"/>
                             <constraint firstItem="FvD-n3-OgL" firstAttribute="centerX" secondItem="DbA-xZ-bCn" secondAttribute="centerX" id="LrP-HV-kSd"/>
                             <constraint firstItem="FvD-n3-OgL" firstAttribute="top" secondItem="G9T-nl-wwg" secondAttribute="bottom" constant="10" id="VhV-q6-gU4"/>
-                            <constraint firstItem="BSp-ae-WBo" firstAttribute="top" secondItem="Qgo-ob-sbC" secondAttribute="bottom" constant="10" id="ZQ6-gf-DjA"/>
+                            <constraint firstItem="BSp-ae-WBo" firstAttribute="top" secondItem="Qgo-ob-sbC" secondAttribute="bottom" constant="20" id="ZQ6-gf-DjA"/>
                             <constraint firstItem="FvD-n3-OgL" firstAttribute="width" secondItem="DbA-xZ-bCn" secondAttribute="width" multiplier="0.8" id="dsy-Ab-ePb"/>
                             <constraint firstItem="Qgo-ob-sbC" firstAttribute="centerX" secondItem="DbA-xZ-bCn" secondAttribute="centerX" id="g3P-8R-QXm"/>
                             <constraint firstItem="5Ou-Wt-WSN" firstAttribute="top" secondItem="BSp-ae-WBo" secondAttribute="bottom" constant="20" id="lIY-9i-QRS"/>
@@ -337,14 +447,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="VrW-jZ-419">
-                                <rect key="frame" x="36" y="115" width="305" height="29"/>
+                                <rect key="frame" x="36" y="115" width="303" height="29"/>
                                 <segments>
-                                    <segment title="250m"/>
                                     <segment title="500m"/>
                                     <segment title="1km"/>
+                                    <segment title="3km"/>
                                     <segment title="5km"/>
                                     <segment title="10km"/>
-                                    <segment title="1m"/>
                                 </segments>
                                 <connections>
                                     <action selector="btnDistRangeSegCon:" destination="TTH-ZT-Ssv" eventType="valueChanged" id="Du6-Lo-J8W"/>
@@ -375,15 +484,30 @@
                                     <action selector="btnTwitterDisconnect:" destination="TTH-ZT-Ssv" eventType="touchUpInside" id="jaw-zZ-kLX"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZa-nF-gZ6">
-                                <rect key="frame" x="170.5" y="469" width="34" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZa-nF-gZ6" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
+                                <rect key="frame" x="112.5" y="469" width="150" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="TYP-WU-F4f"/>
+                                    <constraint firstAttribute="width" constant="150" id="t8t-hQ-aiU"/>
+                                </constraints>
                                 <state key="normal" title="Back"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnBack:" destination="TTH-ZT-Ssv" eventType="touchUpInside" id="Pzl-vY-Fyr"/>
                                     <segue destination="JY0-Tm-bUe" kind="unwind" identifier="UnwindConfig" unwindAction="unwindAction:" id="hAh-N7-dSw"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="NOTICE : If you turn on this, shooted images and those address will be posted to Twitter." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFa-tt-3er">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="NOTICE : If you turn on this, shooted photo and those address will be posted to Twitter." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFa-tt-3er">
                                 <rect key="frame" x="46" y="258" width="293" height="54"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -418,6 +542,7 @@
                             <constraint firstItem="R10-FG-LhS" firstAttribute="leading" secondItem="Jkq-1S-OvL" secondAttribute="leading" constant="20" id="o71-n9-esV"/>
                             <constraint firstItem="VrW-jZ-419" firstAttribute="leading" secondItem="Mdb-6l-x1H" secondAttribute="leading" id="ol8-Wx-gHT"/>
                             <constraint firstItem="nUu-kq-Yp2" firstAttribute="top" secondItem="VrW-jZ-419" secondAttribute="bottom" constant="10" id="tLB-rm-8Qh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VrW-jZ-419" secondAttribute="trailing" constant="20" id="tUp-2K-BD1"/>
                             <constraint firstItem="IFa-tt-3er" firstAttribute="top" secondItem="DcT-jp-Lq5" secondAttribute="bottom" constant="10" id="uKo-kl-uwz"/>
                             <constraint firstItem="nUu-kq-Yp2" firstAttribute="leading" secondItem="VrW-jZ-419" secondAttribute="leading" constant="10" id="yr9-yk-Epz"/>
                         </constraints>

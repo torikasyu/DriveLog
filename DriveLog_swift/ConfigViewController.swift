@@ -73,7 +73,7 @@ class ConfigViewController: UIViewController {
         }
         if let t:String = ud.string(forKey: "TwitterAcName")
         {
-            labelTwitterID.text = t
+            labelTwitterID.text = "@" + t
         }
         else
         {
@@ -151,7 +151,7 @@ class ConfigViewController: UIViewController {
                         ud.set(accounts[0].username, forKey: "TwitterAcName")
                         ud.set(accounts[0].identifier, forKey: "TwitterAcId")
                         
-                        self.labelTwitterID.text = accounts[0].username
+                        self.labelTwitterID.text = "@" + accounts[0].username
                         //self.labelAccountID.text = accounts[0].identifier as String?
                     }
                     
