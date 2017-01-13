@@ -22,6 +22,7 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var textboxTweet: UITextField!
     @IBOutlet weak var labelRemainTime: UILabel!
     @IBOutlet weak var labelPreview: UILabel!
+    @IBOutlet weak var labelTwitterRelation: UILabel!
     
     @IBAction func btnSave_tapped(_ sender: Any) {
         //unwind action
@@ -52,6 +53,20 @@ class PreviewViewController: UIViewController {
             self.labelRemainTime.text = "Will be saved after \(String(format:"%g",remainSecond)) sec"
         }
         // Do any additional setup after loading the view.
+        
+        let ud = UserDefaults()
+        
+        if let t:Bool = ud.bool(forKey: "RelationTwitter") as Bool?
+        {
+            if (t == true)
+            {
+                self.labelTwitterRelation.text = "Twitter Post : ON"
+            }
+            else
+            {
+                self.labelTwitterRelation.text = "Twitter Post : OFF"
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

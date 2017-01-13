@@ -95,8 +95,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
             self.isAutoCaptureMode = true
             self.labelLog.text = "● Auto Shoot : detecting distance.."
             
-            UIApplication.shared.isIdleTimerDisabled = true
-            
             let button = sender as! UIButton
             //button.setTitle("■ Stop Capture", for: UIControlState())
             button.setImage(#imageLiteral(resourceName: "stop_shoot"), for: UIControlState())
@@ -275,7 +273,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         var status = ""
         if let t = address
         {
-            status = t + " #DrivingCamera"
+            status = t + " #DriveTweet"
         }
         
         Util.doTweet(status,imageData: imageData, location: lastLocation)

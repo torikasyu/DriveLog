@@ -18,9 +18,7 @@ class ConfigViewController: UIViewController {
     
     @IBOutlet weak var distRangeSegCon: UISegmentedControl!
     @IBOutlet weak var switchRelationTwitter: UISwitch!
-    
     @IBOutlet weak var labelTwitterID: UILabel!
-    //@IBOutlet weak var labelAccountID: UILabel!
     
     @IBAction func btnDistRangeSegCon(_ sender: UISegmentedControl) {
 
@@ -45,12 +43,10 @@ class ConfigViewController: UIViewController {
         ud.set(nil, forKey: "TwitterAcId")
         
         self.labelTwitterID.text = "No Twitter Account"
-        //self.labelAccountID.text = "";
         self.switchRelationTwitter.isOn = false
     }
     
     @IBAction func btnBack(_ sender: Any) {
-        //_ = self.navigationController?.popViewController(animated: true)
         //unwind action
     }
     
@@ -152,7 +148,6 @@ class ConfigViewController: UIViewController {
                         ud.set(accounts[0].identifier, forKey: "TwitterAcId")
                         
                         self.labelTwitterID.text = "@" + accounts[0].username
-                        //self.labelAccountID.text = accounts[0].identifier as String?
                     }
                     
                 }
@@ -161,8 +156,7 @@ class ConfigViewController: UIViewController {
         else
         {
             isError = true
-            //errMsg = "「設定」でTwitterアカウントを設定してください"
-            errMsg = "Configure Twitter with iPhone Config."
+            errMsg = "Configure Twitter with iPhone's Config."
         }
         
         if(isError)
@@ -171,6 +165,10 @@ class ConfigViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert,animated:true,completion:nil)
             
+            self.switchRelationTwitter.setOn(false, animated: true)
+            let ud = UserDefaults()
+            ud.set(false, forKey: "RelationTwitter")
+    
             isError = false
         }
     }
@@ -202,7 +200,15 @@ class ConfigViewController: UIViewController {
         }
         
         // キャンセルボタン
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel",
+                                      style: .cancel,
+                handler: { (action) -> Void in
+                //
+                self.switchRelationTwitter.setOn(false, animated: true)
+                let ud = UserDefaults()
+                ud.set(false, forKey: "RelationTwitter")
+                //
+        }))
         
         // 表示する
         self.present(alert, animated: true, completion: nil)

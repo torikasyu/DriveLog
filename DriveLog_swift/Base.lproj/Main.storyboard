@@ -95,11 +95,19 @@
                                     <segue destination="FUj-Ot-DoZ" kind="unwind" identifier="UnwindPreviewCancel" unwindAction="unwindAction:" id="pLc-b7-5tF"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Twitter Post : xx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MB0-Ba-38f">
+                                <rect key="frame" x="126.5" y="541" width="122" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="MB0-Ba-38f" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="1Jv-3u-gmt"/>
                             <constraint firstItem="WAJ-Au-rWf" firstAttribute="centerX" secondItem="WS2-na-K5v" secondAttribute="centerX" id="3gX-qt-ORG"/>
                             <constraint firstItem="WS2-na-K5v" firstAttribute="top" secondItem="HP9-GL-td5" secondAttribute="bottom" constant="10" id="EDG-Oo-EDe"/>
+                            <constraint firstItem="MB0-Ba-38f" firstAttribute="top" secondItem="MTH-Q8-Oga" secondAttribute="bottom" constant="30" id="IHh-l6-VVf"/>
                             <constraint firstItem="8fd-1P-3o7" firstAttribute="top" secondItem="WAJ-Au-rWf" secondAttribute="bottom" constant="10" id="Na9-fw-V7z"/>
                             <constraint firstItem="8fd-1P-3o7" firstAttribute="centerX" secondItem="QLu-E7-jS3" secondAttribute="centerX" id="Njs-Ns-xc6"/>
                             <constraint firstItem="WAJ-Au-rWf" firstAttribute="top" secondItem="WS2-na-K5v" secondAttribute="bottom" constant="10" id="PHt-SC-7ma"/>
@@ -119,6 +127,7 @@
                         <outlet property="imageView" destination="WS2-na-K5v" id="GQP-ne-jdl"/>
                         <outlet property="labelPreview" destination="HP9-GL-td5" id="Nl4-gS-65s"/>
                         <outlet property="labelRemainTime" destination="8fd-1P-3o7" id="DL1-x1-Nqt"/>
+                        <outlet property="labelTwitterRelation" destination="MB0-Ba-38f" id="yfH-DN-XJ4"/>
                         <outlet property="textboxTweet" destination="WAJ-Au-rWf" id="Kfm-rW-jk0"/>
                         <segue destination="FUj-Ot-DoZ" kind="unwind" identifier="UnwindActionFromPreviewSegue" unwindAction="unwindActionFromPreview:" id="wCa-Ld-dyW"/>
                     </connections>
@@ -466,26 +475,26 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Twitter ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82x-0c-Yke">
-                                <rect key="frame" x="56" y="358" width="73.5" height="21"/>
+                                <rect key="frame" x="56" y="340" width="73.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Related Twitter Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jkq-1S-OvL">
-                                <rect key="frame" x="36" y="332" width="183" height="21"/>
+                                <rect key="frame" x="36" y="314" width="183" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R10-FG-LhS">
-                                <rect key="frame" x="56" y="389" width="104" height="30"/>
+                                <rect key="frame" x="56" y="371" width="104" height="30"/>
                                 <state key="normal" title="Delete Relation"/>
                                 <connections>
                                     <action selector="btnTwitterDisconnect:" destination="TTH-ZT-Ssv" eventType="touchUpInside" id="jaw-zZ-kLX"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZa-nF-gZ6" customClass="CustomButton" customModule="DriveLog_swift" customModuleProvider="target">
-                                <rect key="frame" x="112.5" y="469" width="150" height="30"/>
+                                <rect key="frame" x="112.5" y="451" width="150" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="TYP-WU-F4f"/>
                                     <constraint firstAttribute="width" constant="150" id="t8t-hQ-aiU"/>
@@ -507,10 +516,10 @@
                                     <segue destination="JY0-Tm-bUe" kind="unwind" identifier="UnwindConfig" unwindAction="unwindAction:" id="hAh-N7-dSw"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="NOTICE : If you turn on this, shooted photo and those address will be posted to Twitter." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFa-tt-3er">
-                                <rect key="frame" x="46" y="258" width="293" height="54"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="If you turn on this, shooted photo and those location will be posted to Twitter." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFa-tt-3er">
+                                <rect key="frame" x="46" y="258" width="293" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="At &quot;Auto Shoot&quot; mode, automatically shoot photo from camera, when device moved those distance." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUu-kq-Yp2">
